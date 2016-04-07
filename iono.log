@@ -1,0 +1,131 @@
+08/20/2015=>>>debug_hash'<head/><br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fopen(/var/www/local.licenses.emagicone.com/public_html/storemanager/regnow_requests.txt): failed to open stream: Permission denied in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>157</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0002</td><td bgcolor=\'#eeeeec\' align=\'right\'>234912</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0002</td><td bgcolor=\'#eeeeec\' align=\'right\'>235072</td><td bgcolor=\'#eeeeec\'>write_regnow_request_log(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>9</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>3</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0003</td><td bgcolor=\'#eeeeec\' align=\'right\'>237392</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fopen\' target=\'_new\'>fopen</a>
+(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>157</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fopen(./create_license_debug.txt): failed to open stream: Permission denied in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>15</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0002</td><td bgcolor=\'#eeeeec\' align=\'right\'>234912</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0005</td><td bgcolor=\'#eeeeec\' align=\'right\'>236032</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fopen\' target=\'_new\'>fopen</a>
+(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>15</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fwrite() expects parameter 1 to be resource, boolean given in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>23</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0002</td><td bgcolor=\'#eeeeec\' align=\'right\'>234912</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0006</td><td bgcolor=\'#eeeeec\' align=\'right\'>238888</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fwrite\' target=\'_new\'>fwrite</a>
+(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>23</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fclose() expects parameter 1 to be resource, boolean given in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>24</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0002</td><td bgcolor=\'#eeeeec\' align=\'right\'>234912</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0007</td><td bgcolor=\'#eeeeec\' align=\'right\'>239000</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fclose\' target=\'_new\'>fclose</a>
+(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>24</td></tr>
+</table></font>
+a:0:{}'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'a:0:{}'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'<head/><br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fopen(/var/www/local.licenses.emagicone.com/public_html/storemanager/regnow_requests.txt): failed to open stream: Permission denied in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>157</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0030</td><td bgcolor=\'#eeeeec\' align=\'right\'>235224</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>5.3914</td><td bgcolor=\'#eeeeec\' align=\'right\'>236712</td><td bgcolor=\'#eeeeec\'>write_regnow_request_log(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>9</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>3</td><td bgcolor=\'#eeeeec\' align=\'center\'>5.4120</td><td bgcolor=\'#eeeeec\' align=\'right\'>239032</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fopen\' target=\'_new\'>fopen</a>
+( ???, ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>157</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fopen(./create_license_debug.txt): failed to open stream: Permission denied in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>15</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0030</td><td bgcolor=\'#eeeeec\' align=\'right\'>235224</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>7.0151</td><td bgcolor=\'#eeeeec\' align=\'right\'>237696</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fopen\' target=\'_new\'>fopen</a>
+( ???, ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>15</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fwrite() expects parameter 1 to be resource, boolean given in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>23</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0030</td><td bgcolor=\'#eeeeec\' align=\'right\'>235224</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>17.4389</td><td bgcolor=\'#eeeeec\' align=\'right\'>240552</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fwrite\' target=\'_new\'>fwrite</a>
+( ???, ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>23</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fclose() expects parameter 1 to be resource, boolean given in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>24</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0030</td><td bgcolor=\'#eeeeec\' align=\'right\'>235224</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>17.8773</td><td bgcolor=\'#eeeeec\' align=\'right\'>240664</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fclose\' target=\'_new\'>fclose</a>
+( ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>24</td></tr>
+</table></font>
+'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'<head/><br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fopen(/var/www/local.licenses.emagicone.com/public_html/storemanager/regnow_requests.txt): failed to open stream: Permission denied in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>157</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0049</td><td bgcolor=\'#eeeeec\' align=\'right\'>235224</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>10.3388</td><td bgcolor=\'#eeeeec\' align=\'right\'>237592</td><td bgcolor=\'#eeeeec\'>write_regnow_request_log(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>9</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>3</td><td bgcolor=\'#eeeeec\' align=\'center\'>10.3391</td><td bgcolor=\'#eeeeec\' align=\'right\'>239928</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fopen\' target=\'_new\'>fopen</a>
+( ???, ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>157</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fopen(./create_license_debug.txt): failed to open stream: Permission denied in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>15</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0049</td><td bgcolor=\'#eeeeec\' align=\'right\'>235224</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>12.2837</td><td bgcolor=\'#eeeeec\' align=\'right\'>238552</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fopen\' target=\'_new\'>fopen</a>
+( ???, ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>15</td></tr>
+</table></font>
+'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'<head/><br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fopen(/var/www/local.licenses.emagicone.com/public_html/storemanager/regnow_requests.txt): failed to open stream: Permission denied in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>157</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0035</td><td bgcolor=\'#eeeeec\' align=\'right\'>235544</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>4.9369</td><td bgcolor=\'#eeeeec\' align=\'right\'>237032</td><td bgcolor=\'#eeeeec\'>write_regnow_request_log(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>9</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>3</td><td bgcolor=\'#eeeeec\' align=\'center\'>4.9371</td><td bgcolor=\'#eeeeec\' align=\'right\'>239520</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fopen\' target=\'_new\'>fopen</a>
+( ???, ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>157</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fopen(./create_license_debug.txt): failed to open stream: Permission denied in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>15</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0035</td><td bgcolor=\'#eeeeec\' align=\'right\'>235544</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>5.5788</td><td bgcolor=\'#eeeeec\' align=\'right\'>237992</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fopen\' target=\'_new\'>fopen</a>
+( ???, ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>15</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fwrite() expects parameter 1 to be resource, boolean given in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>23</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0035</td><td bgcolor=\'#eeeeec\' align=\'right\'>235544</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>14.2888</td><td bgcolor=\'#eeeeec\' align=\'right\'>241176</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fwrite\' target=\'_new\'>fwrite</a>
+( ???, ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>23</td></tr>
+</table></font>
+<br/>
+<font size=\'1\'><table class=\'xdebug-error xe-warning\' dir=\'ltr\' border=\'1\' cellspacing=\'0\' cellpadding=\'1\'>
+<tr><th align=\'left\' bgcolor=\'#f57900\' colspan="5"><span style=\'background-color: #cc0000; color: #fce94f; font-size: x-large;\'>( ! )</span> Warning: fclose() expects parameter 1 to be resource, boolean given in /var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php on line <i>24</i></th></tr>
+<tr><th align=\'left\' bgcolor=\'#e9b96e\' colspan=\'5\'>Call Stack</th></tr>
+<tr><th align=\'center\' bgcolor=\'#eeeeec\'>#</th><th align=\'left\' bgcolor=\'#eeeeec\'>Time</th><th align=\'left\' bgcolor=\'#eeeeec\'>Memory</th><th align=\'left\' bgcolor=\'#eeeeec\'>Function</th><th align=\'left\' bgcolor=\'#eeeeec\'>Location</th></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>1</td><td bgcolor=\'#eeeeec\' align=\'center\'>0.0035</td><td bgcolor=\'#eeeeec\' align=\'right\'>235544</td><td bgcolor=\'#eeeeec\'>{main}(  )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>0</td></tr>
+<tr><td bgcolor=\'#eeeeec\' align=\'center\'>2</td><td bgcolor=\'#eeeeec\' align=\'center\'>14.2889</td><td bgcolor=\'#eeeeec\' align=\'right\'>241288</td><td bgcolor=\'#eeeeec\'><a href=\'http://www.php.net/function.fclose\' target=\'_new\'>fclose</a>
+( ??? )</td><td title=\'/var/www/local.licenses.emagicone.com/public_html/storemanager/create_license.php\' bgcolor=\'#eeeeec\'>../create_license.php<b>:</b>24</td></tr>
+</table></font>
+a:2:{i:0;a:2:{s:4:"name";s:1:"A";s:3:"key";s:35:"113857-177247-0-1440074058-cfcd2084";}i:1;a:2:{s:4:"name";s:1:"A";s:3:"key";s:35:"113857-177248-0-1440074058-cfcd2084";}}'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'a:0:{}'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'a:0:{}'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'a:0:{}'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash''=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'a:0:{}'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'a:2:{i:0;a:2:{s:4:"name";s:48:"Store Manager for wooCommerce Additional License";s:3:"key";s:37:"126117-194145-441-1440075955-68ce199e";}i:1;a:2:{s:4:"name";s:48:"Store Manager for wooCommerce Additional License";s:3:"key";s:37:"126117-194146-441-1440075955-68ce199e";}}'=<<<debug_hash08/20/201508/20/2015=>>>debug_hash'Store Manager for wooCommerce Additional License: 126117-194154-441-1440079074-68ce199e<br>Store Manager for wooCommerce Additional License: 126117-194155-441-1440079074-68ce199e<br>'=<<<debug_hash08/20/201508/21/2015=>>>debug_hash'Store Manager for wooCommerce Primary License: 126117-194208-441-1440146106-f1b6f285<br>Store Manager for wooCommerce Primary License: 126117-194209-441-1440146106-f1b6f285<br>'=<<<debug_hash08/21/201508/21/2015=>>>debug_hash'<strong>Store Manager for wooCommerce Primary License</strong>: 94403-194251-441-1440169135-f1b6f285<br><strong>Store Manager for wooCommerce Primary License</strong>: 94403-194252-441-1440169135-f1b6f285<br>'=<<<debug_hash08/21/201508/25/2015=>>>debug_hash''=<<<debug_hash08/25/201508/26/2015=>>>debug_hash''=<<<debug_hash08/26/2015

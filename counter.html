@@ -1,0 +1,34 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+<script>
+$(document).ready(function(){
+                $('.counter').click( function() {
+					$.ajax({
+						 url:"http://woo.towtruck.te.ua/counter/do.php?post_site=zencart",
+						 type:'GET',
+						 dataType: 'jsonp', 
+			
+						 success:function(json){
+						 },
+						 error:function(){
+							 alert("Error");
+						 }      
+					});
+                });
+            });
+</script>
+<style>
+.counter{
+background:#000;
+width:200px;
+height:100px;
+}
+</style>
+</head>
+<body>
+<div class="counter" /></div>
+
+</body>
+</html>

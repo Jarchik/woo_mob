@@ -1,0 +1,14 @@
+Sitemap: http://woocommerce-manager.com/sitemap_index.xml
+
+User-agent: *
+Disallow: /cgi-bin/
+Disallow: /trackback
+Disallow: /comments
+Disallow: /feed
+Disallow: /shop
+Disallow: /files
+Disallow: /cart
+Disallow: /checkout
+Disallow: /checkout/*
+Disallow: /my-account
+Disallow: /my-account/*

@@ -1,0 +1,24 @@
+<files wp-login.php>
+ order deny,allow
+ # deny from all
+  # whitelist Your First IP address
+  allow from all
+</files>
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+RewriteRule ^sm_redirector.php http://emagicone.com/redirect/main_redirector.php [R=301,L]   
+
+# RewriteCond %{HTTPS} off
+# RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} 
+
+</IfModule>
+
+# END WordPress

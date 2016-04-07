@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="http://woocommerce-manager.com/wp-content/plugins/google-sitemap-plugin/sitemap.xsl"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://woocommerce-manager.com/</loc>
+    <lastmod>2014-11-07T11:24:23+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1</priority>
+  </url>
+  <url>
+    <loc>http://woocommerce-manager.com/tasks-you-can-accomplish-at-lightning-speed/</loc>
+    <lastmod>2014-11-07T13:35:06+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1</priority>
+  </url>
+  <url>
+    <loc>http://woocommerce-manager.com/do-more-that-you-could-ever-imagine/</loc>
+    <lastmod>2014-11-07T14:19:13+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1</priority>
+  </url>
+  <url>
+    <loc>http://woocommerce-manager.com/yay-now-you-bettester/</loc>
+    <lastmod>2014-11-07T11:26:03+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1</priority>
+  </url>
+  <url>
+    <loc>http://woocommerce-manager.com/submision-form/</loc>
+    <lastmod>2014-11-07T12:22:22+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1</priority>
+  </url>
+</urlset>

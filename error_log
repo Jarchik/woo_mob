@@ -1,0 +1,323 @@
+[10-Aug-2015 12:19:13 UTC] Array
+(
+    [akismet_debug] => Array
+        (
+            [akismet_url] => http://d4a507acd43a.rest.akismet.com/1.1/verify-key
+            [http_args] => Array
+                (
+                    [body] => key=d4a507acd43a&blog=https%3A%2F%2Fwoocommerce-manager.com
+                    [headers] => Array
+                        (
+                            [Content-Type] => application/x-www-form-urlencoded; charset=UTF-8
+                            [Host] => d4a507acd43a.rest.akismet.com
+                            [User-Agent] => WordPress/4.2.4 | Akismet/3.0.3
+                        )
+
+                    [httpversion] => 1.0
+                    [timeout] => 15
+                )
+
+            [response] => Array
+                (
+                    [headers] => Array
+                        (
+                            [server] => nginx
+                            [date] => Mon, 10 Aug 2015 12:19:14 GMT
+                            [content-type] => text/plain; charset=utf-8
+                            [content-length] => 5
+                            [connection] => close
+                            [x-akismet-server] => 10.8.86.101
+                        )
+
+                    [body] => valid
+                    [response] => Array
+                        (
+                            [code] => 200
+                            [message] => OK
+                        )
+
+                    [cookies] => Array
+                        (
+                        )
+
+                    [filename] => 
+                )
+
+        )
+
+)
+
+[13-Aug-2015 09:06:44 UTC] Array
+(
+    [akismet_debug] => Array
+        (
+            [akismet_url] => https://d4a507acd43a.rest.akismet.com/1.1/comment-check
+            [http_args] => Array
+                (
+                    [body] => comment_post_ID=277&comment_author=admin&comment_author_email=hymera%40kommy.net&comment_author_url=&comment_content=test&comment_type=&comment_parent=0&user_ID=1&user_id=1&user_ip=93.77.238.194&user_agent=Mozilla%2F5.0+%28Windows+NT+6.1%3B+WOW64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.155+Safari%2F537.36&referrer=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-additional%2F&blog=https%3A%2F%2Fwoocommerce-manager.com&blog_lang=en_US&blog_charset=UTF-8&permalink=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-additional%2F&user_role=administrator&akismet_comment_nonce=passed&POST_rating=5&POST_comment=test&POST_submit=Submit&POST_comment_post_ID=277&POST_comment_parent=0&POST_akismet_comment_nonce=eb7eaa026e&POST__wp_unfiltered_html_comment=c57ebf5baf&POST_ak_js=1439456795424&SERVER_SOFTWARE=Apache&REQUEST_URI=%2Fwp-comments-post.php&PATH=%2Fusr%2Flocal%2Fjdk%2Fbin%3A%2Fusr%2Fkerberos%2Fsbin%3A%2Fusr%2Fkerberos%2Fbin%3A%2Fusr%2Flib%2Fcourier-imap%2Fsbin%3A%2Fusr%2Flib%2Fcourier-imap%2Fbin%3A%2Fusr%2Flocal%2Fsbin%3A%2Fusr%2Flocal%2Fbin%3A%2Fsbin%3A%2Fbin%3A%2Fusr%2Fsbin%3A%2Fusr%2Fbin%3A%2Fusr%2FX11R6%2Fbin%3A%2Fusr%2Flocal%2Fbin%3A%2Fusr%2FX11R6%2Fbin%3A%2Froot%2Fbin%3A%2Fopt%2Fbin&PWD=%2Fusr%2Flocal%2Fcpanel%2Fcgi-sys&SHLVL=0&SCRIPT_NAME=%2Fwp-comments-post.php&QUERY_STRING=&REQUEST_METHOD=POST&SERVER_PROTOCOL=HTTP%2F1.1&GATEWAY_INTERFACE=CGI%2F1.1&REMOTE_PORT=59871&SCRIPT_FILENAME=%2Fhome%2Fwoocommercemanag%2Fpublic_html%2Fwp-comments-post.php&SERVER_ADMIN=webmaster%40woocommerce-manager.com&DOCUMENT_ROOT=%2Fhome%2Fwoocommercemanag%2Fpublic_html&REMOTE_ADDR=93.77.238.194&SERVER_PORT=443&SERVER_ADDR=46.165.225.155&SERVER_NAME=woocommerce-manager.com&SERVER_SIGNATURE=&HTTP_COOKIE=&HTTP_ACCEPT_LANGUAGE=ru-RU%2Cru%3Bq%3D0.8%2Cen-US%3Bq%3D0.6%2Cen%3Bq%3D0.4%2Cuk%3Bq%3D0.2&HTTP_ACCEPT_ENCODING=gzip%2C+deflate&HTTP_REFERER=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-additional%2F&CONTENT_TYPE=application%2Fx-www-form-urlencoded&HTTP_USER_AGENT=Mozilla%2F5.0+%28Windows+NT+6.1%3B+WOW64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.155+Safari%2F537.36&HTTP_UPGRADE_INSECURE_REQUESTS=1&HTTP_ORIGIN=https%3A%2F%2Fwoocommerce-manager.com&HTTP_ACCEPT=text%2Fhtml%2Capplication%2Fxhtml%2Bxml%2Capplication%2Fxml%3Bq%3D0.9%2Cimage%2Fwebp%2C%2A%2F%2A%3Bq%3D0.8&HTTP_CACHE_CONTROL=max-age%3D0&CONTENT_LENGTH=164&HTTP_CONNECTION=close&HTTP_HOST=woocommerce-manager.com&SSL_TLS_SNI=woocommerce-manager.com&HTTPS=on&UNIQUE_ID=VcxeJC6l4ZsAACW8MY4AAAAM&FCGI_ROLE=RESPONDER&PHP_SELF=%2Fwp-comments-post.php&REQUEST_TIME_FLOAT=1439456804.27&REQUEST_TIME=1439456804&argv=&argc=0&comment_post_modified_gmt=2015-08-13+09%3A00%3A44
+                    [headers] => Array
+                        (
+                            [Content-Type] => application/x-www-form-urlencoded; charset=UTF-8
+                            [Host] => d4a507acd43a.rest.akismet.com
+                            [User-Agent] => WordPress/4.2.4 | Akismet/3.1.3
+                        )
+
+                    [httpversion] => 1.0
+                    [timeout] => 15
+                )
+
+            [response] => Array
+                (
+                    [headers] => Array
+                        (
+                            [server] => nginx
+                            [date] => Thu, 13 Aug 2015 09:06:45 GMT
+                            [content-type] => text/plain; charset=utf-8
+                            [content-length] => 5
+                            [connection] => close
+                            [x-akismet-server] => 10.8.86.103
+                            [x-akismet-guid] => 655f7ca870c05cf9b8170e8b8ce9493b
+                        )
+
+                    [body] => false
+                    [response] => Array
+                        (
+                            [code] => 200
+                            [message] => OK
+                        )
+
+                    [cookies] => Array
+                        (
+                        )
+
+                    [filename] => 
+                )
+
+        )
+
+)
+
+[13-Aug-2015 09:06:45 UTC] Array
+(
+    [akismet_debug] => comment_is_spam mismatched comment, returning unaltered 1
+)
+
+[13-Aug-2015 09:19:52 UTC] Array
+(
+    [akismet_debug] => Array
+        (
+            [akismet_url] => https://d4a507acd43a.rest.akismet.com/1.1/comment-check
+            [http_args] => Array
+                (
+                    [body] => comment_post_ID=290&comment_author=oksana&comment_author_email=oksana%40emagicone.com&comment_author_url=&comment_content=The+software+is+amazing%2C+has+many+functions+and+makes+more+easy+some+thing+that+we+need+to+do.&comment_type=&comment_parent=0&user_ID=5&user_id=5&user_ip=93.77.238.194&user_agent=Mozilla%2F5.0+%28Windows+NT+6.1%3B+WOW64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.130+Safari%2F537.36&referrer=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-primary%2F&blog=https%3A%2F%2Fwoocommerce-manager.com&blog_lang=en_US&blog_charset=UTF-8&permalink=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-primary%2F&user_role=administrator&akismet_comment_nonce=passed&POST_rating=5&POST_comment=The+software+is+amazing%2C+has+many+functions+and+makes+more+easy+some+thing+that+we+need+to+do.&POST_submit=Submit&POST_comment_post_ID=290&POST_comment_parent=0&POST_akismet_comment_nonce=2581ed58e9&POST__wp_unfiltered_html_comment=1c5e3a3e40&POST_ak_js=1439457541087&SERVER_SOFTWARE=Apache&REQUEST_URI=%2Fwp-comments-post.php&PATH=%2Fusr%2Flocal%2Fjdk%2Fbin%3A%2Fusr%2Fkerberos%2Fsbin%3A%2Fusr%2Fkerberos%2Fbin%3A%2Fusr%2Flib%2Fcourier-imap%2Fsbin%3A%2Fusr%2Flib%2Fcourier-imap%2Fbin%3A%2Fusr%2Flocal%2Fsbin%3A%2Fusr%2Flocal%2Fbin%3A%2Fsbin%3A%2Fbin%3A%2Fusr%2Fsbin%3A%2Fusr%2Fbin%3A%2Fusr%2FX11R6%2Fbin%3A%2Fusr%2Flocal%2Fbin%3A%2Fusr%2FX11R6%2Fbin%3A%2Froot%2Fbin%3A%2Fopt%2Fbin&PWD=%2Fusr%2Flocal%2Fcpanel%2Fcgi-sys&SHLVL=0&SCRIPT_NAME=%2Fwp-comments-post.php&QUERY_STRING=&REQUEST_METHOD=POST&SERVER_PROTOCOL=HTTP%2F1.1&GATEWAY_INTERFACE=CGI%2F1.1&REMOTE_PORT=63024&SCRIPT_FILENAME=%2Fhome%2Fwoocommercemanag%2Fpublic_html%2Fwp-comments-post.php&SERVER_ADMIN=webmaster%40woocommerce-manager.com&DOCUMENT_ROOT=%2Fhome%2Fwoocommercemanag%2Fpublic_html&REMOTE_ADDR=93.77.238.194&SERVER_PORT=443&SERVER_ADDR=46.165.225.155&SERVER_NAME=woocommerce-manager.com&SERVER_SIGNATURE=&HTTP_COOKIE=&HTTP_ACCEPT_LANGUAGE=en%2Cru%3Bq%3D0.8%2Cuk%3Bq%3D0.6%2Cen-US%3Bq%3D0.4&HTTP_ACCEPT_ENCODING=gzip%2C+deflate&HTTP_REFERER=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-primary%2F&HTTP_DNT=1&CONTENT_TYPE=application%2Fx-www-form-urlencoded&HTTP_USER_AGENT=Mozilla%2F5.0+%28Windows+NT+6.1%3B+WOW64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.130+Safari%2F537.36&HTTP_UPGRADE_INSECURE_REQUESTS=1&HTTP_ORIGIN=https%3A%2F%2Fwoocommerce-manager.com&HTTP_ACCEPT=text%2Fhtml%2Capplication%2Fxhtml%2Bxml%2Capplication%2Fxml%3Bq%3D0.9%2Cimage%2Fwebp%2C%2A%2F%2A%3Bq%3D0.8&HTTP_CACHE_CONTROL=max-age%3D0&CONTENT_LENGTH=256&HTTP_CONNECTION=close&HTTP_HOST=woocommerce-manager.com&SSL_TLS_SNI=woocommerce-manager.com&HTTPS=on&UNIQUE_ID=VcxhNy6l4ZsAADNbUk8AAAAX&FCGI_ROLE=RESPONDER&PHP_SELF=%2Fwp-comments-post.php&REQUEST_TIME_FLOAT=1439457591.58&REQUEST_TIME=1439457591&argv=&argc=0&comment_post_modified_gmt=2015-08-13+09%3A17%3A55
+                    [headers] => Array
+                        (
+                            [Content-Type] => application/x-www-form-urlencoded; charset=UTF-8
+                            [Host] => d4a507acd43a.rest.akismet.com
+                            [User-Agent] => WordPress/4.2.4 | Akismet/3.1.3
+                        )
+
+                    [httpversion] => 1.0
+                    [timeout] => 15
+                )
+
+            [response] => Array
+                (
+                    [headers] => Array
+                        (
+                            [server] => nginx
+                            [date] => Thu, 13 Aug 2015 09:19:53 GMT
+                            [content-type] => text/plain; charset=utf-8
+                            [content-length] => 5
+                            [connection] => close
+                            [x-akismet-server] => 10.8.86.103
+                            [x-akismet-guid] => 5e3611e1b7a494cb5f9e4fd054d8b861
+                        )
+
+                    [body] => false
+                    [response] => Array
+                        (
+                            [code] => 200
+                            [message] => OK
+                        )
+
+                    [cookies] => Array
+                        (
+                        )
+
+                    [filename] => 
+                )
+
+        )
+
+)
+
+[13-Aug-2015 09:19:52 UTC] Array
+(
+    [akismet_debug] => comment_is_spam mismatched comment, returning unaltered 1
+)
+
+[13-Aug-2015 09:22:29 UTC] Array
+(
+    [akismet_debug] => Array
+        (
+            [akismet_url] => https://d4a507acd43a.rest.akismet.com/1.1/comment-check
+            [http_args] => Array
+                (
+                    [body] => comment_post_ID=277&comment_author=oksana&comment_author_email=oksana%40emagicone.com&comment_author_url=&comment_content=Do+I+need+WooCommerce+primary+license+to+use+additional%3F&comment_type=&comment_parent=0&user_ID=5&user_id=5&user_ip=93.77.238.194&user_agent=Mozilla%2F5.0+%28Windows+NT+6.1%3B+WOW64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.130+Safari%2F537.36&referrer=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-additional%2F&blog=https%3A%2F%2Fwoocommerce-manager.com&blog_lang=en_US&blog_charset=UTF-8&permalink=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-additional%2F&user_role=administrator&akismet_comment_nonce=passed&POST_rating=5&POST_comment=Do+I+need+WooCommerce+primary+license+to+use+additional%3F&POST_submit=Submit&POST_comment_post_ID=277&POST_comment_parent=0&POST_akismet_comment_nonce=2da6509097&POST__wp_unfiltered_html_comment=d5ff33810a&POST_ak_js=1439457703052&SERVER_SOFTWARE=Apache&REQUEST_URI=%2Fwp-comments-post.php&PATH=%2Fusr%2Flocal%2Fjdk%2Fbin%3A%2Fusr%2Fkerberos%2Fsbin%3A%2Fusr%2Fkerberos%2Fbin%3A%2Fusr%2Flib%2Fcourier-imap%2Fsbin%3A%2Fusr%2Flib%2Fcourier-imap%2Fbin%3A%2Fusr%2Flocal%2Fsbin%3A%2Fusr%2Flocal%2Fbin%3A%2Fsbin%3A%2Fbin%3A%2Fusr%2Fsbin%3A%2Fusr%2Fbin%3A%2Fusr%2FX11R6%2Fbin%3A%2Fusr%2Flocal%2Fbin%3A%2Fusr%2FX11R6%2Fbin%3A%2Froot%2Fbin%3A%2Fopt%2Fbin&PWD=%2Fusr%2Flocal%2Fcpanel%2Fcgi-sys&SHLVL=0&SCRIPT_NAME=%2Fwp-comments-post.php&QUERY_STRING=&REQUEST_METHOD=POST&SERVER_PROTOCOL=HTTP%2F1.1&GATEWAY_INTERFACE=CGI%2F1.1&REMOTE_PORT=63075&SCRIPT_FILENAME=%2Fhome%2Fwoocommercemanag%2Fpublic_html%2Fwp-comments-post.php&SERVER_ADMIN=webmaster%40woocommerce-manager.com&DOCUMENT_ROOT=%2Fhome%2Fwoocommercemanag%2Fpublic_html&REMOTE_ADDR=93.77.238.194&SERVER_PORT=443&SERVER_ADDR=46.165.225.155&SERVER_NAME=woocommerce-manager.com&SERVER_SIGNATURE=&HTTP_COOKIE=&HTTP_ACCEPT_LANGUAGE=en%2Cru%3Bq%3D0.8%2Cuk%3Bq%3D0.6%2Cen-US%3Bq%3D0.4&HTTP_ACCEPT_ENCODING=gzip%2C+deflate&HTTP_REFERER=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-additional%2F&HTTP_DNT=1&CONTENT_TYPE=application%2Fx-www-form-urlencoded&HTTP_USER_AGENT=Mozilla%2F5.0+%28Windows+NT+6.1%3B+WOW64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.130+Safari%2F537.36&HTTP_UPGRADE_INSECURE_REQUESTS=1&HTTP_ORIGIN=https%3A%2F%2Fwoocommerce-manager.com&HTTP_ACCEPT=text%2Fhtml%2Capplication%2Fxhtml%2Bxml%2Capplication%2Fxml%3Bq%3D0.9%2Cimage%2Fwebp%2C%2A%2F%2A%3Bq%3D0.8&HTTP_CACHE_CONTROL=max-age%3D0&CONTENT_LENGTH=218&HTTP_CONNECTION=close&HTTP_HOST=woocommerce-manager.com&SSL_TLS_SNI=woocommerce-manager.com&HTTPS=on&UNIQUE_ID=Vcxh1C6l4ZsAADboFJkAAAAM&FCGI_ROLE=RESPONDER&PHP_SELF=%2Fwp-comments-post.php&REQUEST_TIME_FLOAT=1439457748.62&REQUEST_TIME=1439457748&argv=&argc=0&comment_post_modified_gmt=2015-08-13+09%3A18%3A08
+                    [headers] => Array
+                        (
+                            [Content-Type] => application/x-www-form-urlencoded; charset=UTF-8
+                            [Host] => d4a507acd43a.rest.akismet.com
+                            [User-Agent] => WordPress/4.2.4 | Akismet/3.1.3
+                        )
+
+                    [httpversion] => 1.0
+                    [timeout] => 15
+                )
+
+            [response] => Array
+                (
+                    [headers] => Array
+                        (
+                            [server] => nginx
+                            [date] => Thu, 13 Aug 2015 09:22:30 GMT
+                            [content-type] => text/plain; charset=utf-8
+                            [content-length] => 5
+                            [connection] => close
+                            [x-akismet-server] => 10.8.86.103
+                            [x-akismet-guid] => 1556bf1aa970885b91013bee125009d9
+                        )
+
+                    [body] => false
+                    [response] => Array
+                        (
+                            [code] => 200
+                            [message] => OK
+                        )
+
+                    [cookies] => Array
+                        (
+                        )
+
+                    [filename] => 
+                )
+
+        )
+
+)
+
+[13-Aug-2015 09:22:29 UTC] Array
+(
+    [akismet_debug] => comment_is_spam mismatched comment, returning unaltered 1
+)
+
+[13-Aug-2015 09:45:00 UTC] Array
+(
+    [akismet_debug] => Array
+        (
+            [akismet_url] => https://d4a507acd43a.rest.akismet.com/1.1/comment-check
+            [http_args] => Array
+                (
+                    [body] => comment_post_ID=277&comment_author=admin&comment_author_email=hymera%40kommy.net&comment_author_url=&comment_content=sdsd&comment_type=&comment_parent=0&user_ID=1&user_id=1&user_ip=93.77.238.194&user_agent=Mozilla%2F5.0+%28Windows+NT+6.1%3B+WOW64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.155+Safari%2F537.36&referrer=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-additional%2F%3Fpreview%3Dtrue%26preview_id%3D277%26preview_nonce%3D04017a089c&blog=https%3A%2F%2Fwoocommerce-manager.com&blog_lang=en_US&blog_charset=UTF-8&permalink=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-additional%2F&user_role=administrator&akismet_comment_nonce=passed&POST_rating=5&POST_comment=sdsd&POST_comment_post_ID=277&POST_comment_parent=0&POST_akismet_comment_nonce=eb7eaa026e&POST__wp_unfiltered_html_comment=c57ebf5baf&POST_ak_js=1439459088741&SERVER_SOFTWARE=Apache&REQUEST_URI=%2Fwp-comments-post.php&PATH=%2Fusr%2Flocal%2Fjdk%2Fbin%3A%2Fusr%2Fkerberos%2Fsbin%3A%2Fusr%2Fkerberos%2Fbin%3A%2Fusr%2Flib%2Fcourier-imap%2Fsbin%3A%2Fusr%2Flib%2Fcourier-imap%2Fbin%3A%2Fusr%2Flocal%2Fsbin%3A%2Fusr%2Flocal%2Fbin%3A%2Fsbin%3A%2Fbin%3A%2Fusr%2Fsbin%3A%2Fusr%2Fbin%3A%2Fusr%2FX11R6%2Fbin%3A%2Fusr%2Flocal%2Fbin%3A%2Fusr%2FX11R6%2Fbin%3A%2Froot%2Fbin%3A%2Fopt%2Fbin&PWD=%2Fusr%2Flocal%2Fcpanel%2Fcgi-sys&SHLVL=0&SCRIPT_NAME=%2Fwp-comments-post.php&QUERY_STRING=&REQUEST_METHOD=POST&SERVER_PROTOCOL=HTTP%2F1.1&GATEWAY_INTERFACE=CGI%2F1.1&REMOTE_PORT=62378&SCRIPT_FILENAME=%2Fhome%2Fwoocommercemanag%2Fpublic_html%2Fwp-comments-post.php&SERVER_ADMIN=webmaster%40woocommerce-manager.com&DOCUMENT_ROOT=%2Fhome%2Fwoocommercemanag%2Fpublic_html&REMOTE_ADDR=93.77.238.194&SERVER_PORT=443&SERVER_ADDR=46.165.225.155&SERVER_NAME=woocommerce-manager.com&SERVER_SIGNATURE=&HTTP_COOKIE=&HTTP_ACCEPT_LANGUAGE=ru-RU%2Cru%3Bq%3D0.8%2Cen-US%3Bq%3D0.6%2Cen%3Bq%3D0.4%2Cuk%3Bq%3D0.2&HTTP_ACCEPT_ENCODING=gzip%2C+deflate&HTTP_REFERER=https%3A%2F%2Fwoocommerce-manager.com%2Fproduct%2Fwoocommerce-store-manager-pro-additional%2F%3Fpreview%3Dtrue%26preview_id%3D277%26preview_nonce%3D04017a089c&CONTENT_TYPE=application%2Fx-www-form-urlencoded%3B+charset%3DUTF-8&HTTP_USER_AGENT=Mozilla%2F5.0+%28Windows+NT+6.1%3B+WOW64%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F44.0.2403.155+Safari%2F537.36&HTTP_X_WPAC_REQUEST=1&HTTP_X_REQUESTED_WITH=XMLHttpRequest&HTTP_ORIGIN=https%3A%2F%2Fwoocommerce-manager.com&HTTP_ACCEPT=%2A%2F%2A&CONTENT_LENGTH=150&HTTP_CONNECTION=close&HTTP_HOST=woocommerce-manager.com&SSL_TLS_SNI=woocommerce-manager.com&HTTPS=on&UNIQUE_ID=VcxnHC6l4ZsAAEsv-tAAAAAA&FCGI_ROLE=RESPONDER&PHP_SELF=%2Fwp-comments-post.php&REQUEST_TIME_FLOAT=1439459100.21&REQUEST_TIME=1439459100&argv=&argc=0&comment_post_modified_gmt=2015-08-13+09%3A38%3A20
+                    [headers] => Array
+                        (
+                            [Content-Type] => application/x-www-form-urlencoded; charset=UTF-8
+                            [Host] => d4a507acd43a.rest.akismet.com
+                            [User-Agent] => WordPress/4.2.4 | Akismet/3.1.3
+                        )
+
+                    [httpversion] => 1.0
+                    [timeout] => 15
+                )
+
+            [response] => Array
+                (
+                    [headers] => Array
+                        (
+                            [server] => nginx
+                            [date] => Thu, 13 Aug 2015 09:45:01 GMT
+                            [content-type] => text/plain; charset=utf-8
+                            [content-length] => 5
+                            [connection] => close
+                            [x-akismet-server] => 10.8.86.133
+                            [x-akismet-guid] => 4ea86ead0a43a1d351f0778e69247985
+                        )
+
+                    [body] => false
+                    [response] => Array
+                        (
+                            [code] => 200
+                            [message] => OK
+                        )
+
+                    [cookies] => Array
+                        (
+                        )
+
+                    [filename] => 
+                )
+
+        )
+
+)
+
+[13-Aug-2015 09:45:00 UTC] Array
+(
+    [akismet_debug] => comment_is_spam mismatched comment, returning unaltered 1
+)
+
+[13-Aug-2015 11:49:09 UTC] PHP Fatal error:  Call to undefined function nohome_nav() in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/header.php on line 41
+[13-Aug-2015 11:58:04 UTC] PHP Fatal error:  Class 'Boots_Walker_mod' not found in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/functions.php on line 220
+[14-Aug-2015 15:33:45 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/functions.php on line 708
+[14-Aug-2015 15:33:50 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/functions.php on line 708
+[14-Aug-2015 15:34:05 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/functions.php on line 708
+[14-Aug-2015 15:35:36 UTC] PHP Parse error:  syntax error, unexpected end of file in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/functions.php on line 708
+[17-Aug-2015 09:17:15 UTC] PHP Fatal error:  Call to undefined function user_logged_in() in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/footer.php on line 3
+[17-Aug-2015 09:17:18 UTC] PHP Fatal error:  Call to undefined function user_logged_in() in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/footer.php on line 3
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in isset or empty in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/functions.php on line 293
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in isset or empty in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 141
+[17-Aug-2015 09:29:06 UTC] PHP Warning:  Illegal offset type in isset or empty in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 150
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in isset or empty in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/functions.php on line 293
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in isset or empty in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 141
+[17-Aug-2015 09:29:53 UTC] PHP Warning:  Illegal offset type in isset or empty in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 150
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 224
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 242
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in isset or empty in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/functions.php on line 293
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in isset or empty in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 141
+[17-Aug-2015 09:30:14 UTC] PHP Warning:  Illegal offset type in isset or empty in /home/woocommercemanag/public_html/wp-includes/class-wp-walker.php on line 150
+[19-Aug-2015 10:31:59 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ',' or ';' in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/woocommerce/loop/add-to-cart.php on line 39
+[19-Aug-2015 10:32:03 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ',' or ';' in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/woocommerce/loop/add-to-cart.php on line 39
+[19-Aug-2015 10:32:31 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ',' or ';' in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/woocommerce/loop/add-to-cart.php on line 39
+[19-Aug-2015 10:32:44 UTC] PHP Parse error:  syntax error, unexpected ')', expecting ',' or ';' in /home/woocommercemanag/public_html/wp-content/themes/woocommerce/woocommerce/loop/add-to-cart.php on line 39

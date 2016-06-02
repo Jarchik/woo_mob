@@ -45,11 +45,11 @@ if ( ! $product->is_purchasable() ) {
 	 	?>
 
 	 	<input type="hidden" name="add-to-cart" value="<?php echo esc_attr( $product->id ); ?>" />
-<?php if( is_user_logged_in()  ) { ?>
+<?php //if( is_user_logged_in()  ) { ?>
 	 	 <button type="submit" id="button_add_to_cart_<?php echo get_the_ID() ?>" class="single_add_to_cart_button button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button> 
-<?php } else { ?>		 
-	  <button type="submit" disabled="disabled" id="button_add_to_cart_<?php echo get_the_ID() ?>" class="single_add_to_cart_button button alt">Coming soon</button> 
-<?php } ?>
+<?php //} else { ?><!--		 -->
+<!--	  <button type="submit" disabled="disabled" id="button_add_to_cart_--><?php //echo get_the_ID() ?><!--" class="single_add_to_cart_button button alt">Coming soon</button> -->
+<?php //} ?>
 		<?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
 	</form>
 

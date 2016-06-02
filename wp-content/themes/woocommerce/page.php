@@ -73,11 +73,11 @@ if ( $query->have_posts() ) {
 										<?php endif; ?>
 										
 												<?php  $add_to_cart = do_shortcode('[add_to_cart_url id="'.get_the_ID().'"]'); ?>
-												<?php if( is_user_logged_in()  ) { ?>
+<!--												--><?php //if( is_user_logged_in()  ) { ?>
 												<div class="plan-button" id="button_add_to_cart_<?php echo get_the_ID() ?>" ><a href="<?php echo $add_to_cart ?>">Buy Now</a></div> 
-													<?php  } else { ?>
-												<div class="plan-button"><a href="#">Coming soon</a></div> 
-												<?php  }  ?>
+<!--													--><?php // } else { ?>
+<!--												<div class="plan-button"><a href="#">Coming soon</a></div> -->
+<!--												--><?php // }  ?>
 							</div>
 						
 						</div>

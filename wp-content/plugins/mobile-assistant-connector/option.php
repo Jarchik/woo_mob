@@ -16,18 +16,22 @@ class ConnectorSettingsPage
      */
     public function __construct()
     {
+//        add_action('admin_menu', array(
+//            $this,
+//            'add_plugin_page'
+//        ));
         add_action('admin_menu', array(
             $this,
-            'add_plugin_page'
+            'add_admin_page'
         ));
-        add_action('admin_init', array(
+/*        add_action('admin_init', array(
             $this,
             'page_init'
         ));
         add_action('admin_footer', array(
             $this,
             'qr_code'
-        ));
+        ));*/
     }
     
     public function qr_code()
@@ -52,6 +56,20 @@ class ConnectorSettingsPage
                 });
             </script>';
     }
+
+    public function add_admin_page()
+    {
+        add_menu_page( 'Mobile Assistant Connector',
+            'MA Connector',
+            'manage_options',
+            'connector',
+            array(
+                $this,
+                'render_page'
+            ),
+            plugins_url('/images/woo.png', __FILE__)
+        );
+    }
     
     /**
      * Add options page
@@ -59,10 +77,16 @@ class ConnectorSettingsPage
     public function add_plugin_page()
     {
         // This page will be under "Settings"
-        add_menu_page( 'Mobile Assistant Connector', 'MA Connector' , 'manage_options', 'connector', array(
-            $this,
-            'create_admin_page'
-        ), plugins_url('/images/woo.png', __FILE__));
+        add_menu_page( 'Mobile Assistant Connector',
+            'MA Connector',
+            'manage_options',
+            'connector',
+            array(
+                $this,
+                'create_admin_page'
+            ),
+            plugins_url('/images/woo.png', __FILE__)
+        );
     }
     /**
      * Options page callback
@@ -106,7 +130,18 @@ class ConnectorSettingsPage
 		
         <?php
     }
-    
+
+    public function ajax() {
+//        check_ajax_referer('aam_ajax');
+
+        //clean buffer to make sure that nothing messing around with system
+        while (@ob_end_clean()){}
+
+        //process ajax request
+        echo AAM_Backend_View::getInstance()->processAjax();
+        exit();
+    }
+
     /**
      * Register and add settings
      */
@@ -120,7 +155,40 @@ class ConnectorSettingsPage
                 'sanitize'
             ) // Sanitize
         );
-        
+
+//        add_settings_section(
+//            'setting_section_id',
+//            'Connector Page',
+//            array(
+//                $this,
+//                'print_section_all'
+//            ),
+//            'connector-all'
+//        );
+
+        // This page will be under "Settings"
+/*        add_menu_page( 'Mobile Assistant Connector',
+            'MA Connector',
+            'manage_options',
+            'connector',
+            array(
+                $this,
+                'render_page'
+            ),
+            plugins_url('/images/woo.png', __FILE__)
+        );*/
+
+
+/*        add_settings_section(
+            'setting_section_id',
+            'Connector Users',
+            array(
+                $this,
+                'print_section_users'
+            ),
+            'connector-users'
+        );
+
         add_settings_section(
             'setting_section_id', // ID
             'Connector Access', // Title
@@ -151,7 +219,7 @@ class ConnectorSettingsPage
             'connector-qr' // Page
         );
 
-        /*--- login ---*/
+        //--- login ---
         add_settings_field(
             'login', // ID
             'Login', // Title 
@@ -163,7 +231,7 @@ class ConnectorSettingsPage
             'setting_section_id' // Section           
         );
 
-        /*--- pass ---*/
+        //--- pass
         add_settings_field(
             'pass',
             'Password',
@@ -173,7 +241,7 @@ class ConnectorSettingsPage
             ),
             'connector-access',
             'setting_section_id'
-        );
+        );*/
     }
 	
     /**
@@ -207,7 +275,29 @@ class ConnectorSettingsPage
     {
         print 'Enter connector credentials below:';
     }
-    
+
+    public function print_section_users()
+    {
+        print 'Users:';
+    }
+
+    public function render_page()
+    {
+        ob_start();
+        require_once(dirname(__FILE__) . '/backend/view/main.phtml');
+//        require_once(dirname(__FILE__) . '/backend/view/index.phtml');
+
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        echo $content;
+    }
+
+    public function print_section_all()
+    {
+        print 'Users:';
+    }
+
     public function print_section_config()
     {
         print 'Enter Connector settings below:';

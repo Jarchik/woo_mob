@@ -16,5 +16,7 @@ function uninstall_mobassistantconnector() {
     $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->prefix}mobileassistant_devices`");
     $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->prefix}mobileassistant_session_keys`");
     $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->prefix}mobileassistant_failed_login`");
+    $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->prefix}mobileassistant_users`");
+    $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->prefix}mobileassistant_accounts`");
     $wpdb->delete($wpdb->options, array('option_name' => 'mobassistantconnector'));
 }

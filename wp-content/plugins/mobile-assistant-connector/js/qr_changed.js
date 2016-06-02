@@ -3,8 +3,9 @@ var $ = jQuery.noConflict();
 $(document).ready(function() {
     var mobassist_login = $("#mobassist_login");
     var mobassist_pass = $("#mobassist_pass");
-    var _old_login = $(mobassist_login).val();
-    var _old_pass = $(mobassist_pass).val();
+
+    _old_login = $(mobassist_login).val();
+    _old_pass = $(mobassist_pass).val();
 
     var onCredetChange = function() {
         var mobassist_qr_code_changed = $("#mobassist_qr_code_changed");
@@ -15,7 +16,7 @@ $(document).ready(function() {
 
             if($(qr).width() > 0 && $(qr).attr("src") != "") {
                 $(mobassist_qr_code_changed).width($(qr).width()).show("fast");
-                qr.css('opacity', '0.1').show('fast');
+                qr.css('opacity', '0.5').show('fast');
             } else {
                 $(mobassist_qr_code_changed).hide("fast");
                 qr.css('opacity', '1').show('fast');

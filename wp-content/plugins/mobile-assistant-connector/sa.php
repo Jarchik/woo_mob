@@ -11,20 +11,19 @@ class MobileAssistantConnector
 
     public $call_function;
     public $hash;
-    private $session_key;
-    private $registration_id;
-    private $device_unique_id;
-    private $account_email;
-    private $device_name;
     protected $sDBHost = '';
     protected $sDBUser = '';
     protected $sDBPwd = '';
+//    private $account_email;
     protected $sDBName = '';
     protected $sDBPrefix = '';
     protected $site_url = '';
     protected $CartType = -1;
     protected $status_list_hide = array("auto-draft", "draft", "trash" );
-
+    private $session_key;
+    private $registration_id;
+    private $device_unique_id;
+    private $device_name;
 
     public function __construct() {
         if (!ini_get('date.timezone') || ini_get('date.timezone' == "")) {
@@ -57,28 +56,12 @@ class MobileAssistantConnector
         $this->map_push_notification_to_device();
         $this->update_device_last_activity();
 
+        if ( $this->call_function == 'get_qr_code' && $this->hash ) {
+            $this->get_qr_code();
+        }
+
         if ( $this->call_function == 'get_version' ) {
-            $session_key = '';
-
-            if ( $this->hash ) {
-                if ( $this->check_auth() ) {
-                    if ( $this->session_key ) {
-                        if ( Mobassistantconnector_Access::check_session_key( $this->session_key ) ) {
-                            $session_key = $this->session_key;
-                        } else {
-                            $session_key = Mobassistantconnector_Access::get_session_key( $this->hash );
-                        }
-                    } else {
-                        $session_key = Mobassistantconnector_Access::get_session_key( $this->hash );
-                    }
-                } else {
-                    $this->generate_output( 'auth_error' );
-                }
-            } elseif ( $this->session_key && Mobassistantconnector_Access::check_session_key( $this->session_key ) ) {
-                $session_key = $this->session_key;
-            }
-
-            $this->generate_output( array( 'session_key' => $session_key ) );
+            $this->get_version();
         }
 
         if ( $this->hash ) {
@@ -101,10 +84,6 @@ class MobileAssistantConnector
         /*if (!$this->check_auth()) {
             $this->generate_output('auth_error');
         }*/
-
-        if ($this->call_function == 'test_config') {
-            $this->generate_output(array('test' => 1));
-        }
 
         $params = $this->validate_types($_REQUEST, array(
             'show' => 'INT',
@@ -154,12 +133,13 @@ class MobileAssistantConnector
             'module' => 'STR',
             'controller' => 'STR',
             'change_order_status_comment' => 'STR',
+            'account_email' => 'STR',
+            'qr_hash' => 'STR'
         ));
 
         foreach ($params as $k => $value) {
             $this->{$k} = $value;
         }
-
 
 //        if(empty($this->currency_code) || $this->currency_code == 'not_set') {
 //            $this->currency = '';
@@ -175,27 +155,106 @@ class MobileAssistantConnector
             $this->push_currency_code = '';
         }*/
 
+        if ($this->call_function == 'test_config') {
+            $result = array('test' => 1);
+
+            if ($this->check_permission) {
+                $this->call_function = $this->check_permission;
+                $result['permission_granted'] = $this->is_action_allowed() ? '1' : '0';
+            }
+
+            $this->generate_output($result);
+        }
+
+        $this->check_allowed_actions();
+
         $this->site_url = get_site_url();
+    }
+
+    private function get_version()
+    {
+        $session_key = '';
+
+        if ( $this->hash ) {
+            $user_data = Mobassistantconnector_Access::check_auth($this->hash);
+            if ( $user_data ) {
+                if ( $this->session_key ) {
+                    if ( Mobassistantconnector_Access::check_session_key( $this->session_key, $user_data['user_id'] ) ) {
+                        $session_key = $this->session_key;
+                    } else {
+                        $session_key = Mobassistantconnector_Access::get_session_key( $this->hash, $user_data['user_id'] );
+                    }
+                } else {
+                    $session_key = Mobassistantconnector_Access::get_session_key( $this->hash, $user_data['user_id'] );
+                }
+            } else {
+                $this->generate_output( 'auth_error' );
+            }
+        } elseif ( $this->session_key && Mobassistantconnector_Access::check_session_key( $this->session_key ) ) {
+            $session_key = $this->session_key;
+        }
+
+        $this->generate_output( array( 'session_key' => $session_key ) );
+    }
+
+    private function check_allowed_actions()
+    {
+        if (!$this->is_action_allowed()) {
+            $this->generate_output('action_forbidden');
+        }
+    }
+
+    private function is_action_allowed()
+    {
+        $is_allowed = false;
+
+        $allowed_functions_always = array(
+            'run_self_test',
+            'get_stores',
+            'get_currencies',
+            'get_store_title',
+            'get_orders_statuses',
+            'get_carriers',
+            'push_notification_settings',
+            'get_qr_code',
+        );
+
+        if (in_array($this->call_function, $allowed_functions_always)) {
+            return true;
+        }
+
+        $user_allowed_actions = Mobassistantconnector_Access::get_allowed_actions_by_session_key($this->session_key);
+
+        $all_actions = Mobassistantconnector_Functions::get_default_actions();
+
+        if ($this->call_function == 'set_order_action') {
+            if ($this->action == 'change_status' && in_array('update_order_status', $user_allowed_actions)) {
+                $is_allowed = true;
+            } elseif ($this->action == 'update_track_number'
+                && in_array('update_order_tracking_number', $user_allowed_actions)) {
+                $is_allowed = true;
+            }
+        } else {
+            foreach ($all_actions as $action_group) {
+                foreach ($action_group as $action) {
+                    if (in_array($this->call_function, $action['functions'])) {
+                        if (in_array($action['code'], $user_allowed_actions)) {
+                            $is_allowed = true;
+                        }
+
+                        break 2;
+                    }
+                }
+            }
+        }
+
+        return $is_allowed;
     }
 
     private function check_is_woo_activated() {
         if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
             $this->generate_output('module_disabled');
         }
-    }
-
-    private function run_self_test() {
-		$html = '<h2>Mobile Assistant Connector (v. ' . self::PLUGIN_VERSION . ')</h2>
-			<div style="margin-top: 15px; font-size: 13px;">Mobile Assistant Connector by <a href="http://emagicone.com" target="_blank"
-			style="color: #15428B">eMagicOne</a></div>';
-
-        die( $html );
-    }
-
-    private function test_default_password_is_changed() {
-        $options = get_option('mobassistantconnector');
-
-        return !($options['login'] == '1' && md5($options['pass']) == 'c4ca4238a0b923820dcc509a6f75849b');
     }
 
     public function generate_output($data) {
@@ -238,6 +297,148 @@ class MobileAssistantConnector
         die($data);
     }
 
+    protected function validate_type($value, $type)
+    {
+        switch ($type) {
+            case 'INT':
+                $value = intval($value);
+                break;
+            case 'FLOAT':
+                $value = floatval($value);
+                break;
+            case 'STR':
+                $value = str_replace(array("\r", "\n"), ' ', addslashes(htmlspecialchars(trim($value))));
+                break;
+            case 'STR_HTML':
+                $value = addslashes(trim($value));
+                break;
+            default:
+        }
+        return $value;
+    }
+
+    private function run_self_test() {
+		$html = '<h2>Mobile Assistant Connector (v. ' . self::PLUGIN_VERSION . ')</h2>
+			<div style="margin-top: 15px; font-size: 13px;">Mobile Assistant Connector by <a href="http://emagicone.com" target="_blank"
+			style="color: #15428B">eMagicOne</a></div>';
+
+        die( $html );
+    }
+
+    private function map_push_notification_to_device() {
+        global $wpdb;
+
+        if ( ! $this->registration_id || ! $this->device_unique_id || $this->call_function == 'delete_push_config' ) {
+            return;
+        }
+
+        $date          = date('Y-m-d H:i:s');
+        $account_email = '';
+        $device_name   = '';
+
+        if ( isset( $_REQUEST['account_email'] ) ) {
+            $account_email = $_REQUEST['account_email'];
+        }
+
+        if ( isset( $_REQUEST['device_name'] ) ) {
+            $device_name = $_REQUEST['device_name'];
+        }
+
+        $account_id = $this->getAccountIdByEmail((string)($account_email));
+
+        $device_id = $this->InsertAndUpdateDevice($this->device_unique_id, $account_id, $device_name, $date);
+
+        if (!empty($id)) {
+            $wpdb->update( "{$wpdb->prefix}mobileassistant_push_settings", array( 'device_unique_id' => $device_id ),
+                array( 'registration_id' => $this->registration_id ), array( '%d' ), array( '%s' ) );
+        }
+    }
+
+    private function getAccountIdByEmail($account_email) {
+        global $wpdb;
+
+        if (empty($account_email)) {
+            return false;
+        }
+
+        $account_id = $wpdb->get_var( $wpdb->prepare( "SELECT `id` FROM `{$wpdb->prefix}mobileassistant_accounts` WHERE `account_email` = %s LIMIT 1",
+            $account_email ) );
+
+        if (!$account_id) {
+            $sql = $wpdb->prepare(
+                "INSERT INTO `{$wpdb->prefix}mobileassistant_accounts` (`account_email`, `status`)
+                VALUES (%s, 1)", $account_email
+            );
+            $result = $wpdb->query($sql);
+
+            if (false !== $result) {
+                $account_id = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT `id` FROM `{$wpdb->prefix}mobileassistant_accounts` WHERE `account_email` = %s LIMIT 1",
+                        $account_email
+                    )
+                );
+            }
+        }
+
+        return $account_id;
+    }
+
+    private function InsertAndUpdateDevice($device_unique_id, $account_id, $device_name, $date) {
+        global $wpdb;
+
+        $id = false;
+
+        $sql = $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}mobileassistant_devices` (`device_unique`, `account_id`, `device_name`, `last_activity`)
+			VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE `device_name` = %s, `last_activity` = %s",
+            $device_unique_id, $account_id, $device_name, $date, /* duplicate */ $device_name, $date);
+        $result = $wpdb->query($sql);
+
+        if ( false !== $result ) {
+            $id = $wpdb->get_var( $wpdb->prepare( "SELECT `device_unique_id` FROM `{$wpdb->prefix}mobileassistant_devices` WHERE `device_unique` = %s AND `account_id` = %s",
+                $device_unique_id, $account_id ) );
+        }
+
+        return $id;
+    }
+
+    private function update_device_last_activity() {
+        global $wpdb;
+
+        $account_id = $this->getAccountIdByEmail((string)$_REQUEST['account_email']);
+
+        if ( isset( $_REQUEST['device_unique_id'] ) ) {
+            $wpdb->update( "{$wpdb->prefix}mobileassistant_devices", array( 'last_activity' => date( 'Y-m-d H:i:s' ) ),
+                array( 'device_unique' => $_REQUEST['device_unique_id'], 'account_id' => $account_id ), array( '%s' ), array( '%s' ), array( '%d') );
+        }
+    }
+
+    protected function validate_types($array, $names)
+    {
+        foreach ($names as $name => $type) {
+            if (isset($array["$name"])) {
+                switch ($type) {
+                    case 'INT':
+                        $array["$name"] = intval($array["$name"]);
+                        break;
+                    case 'FLOAT':
+                        $array["$name"] = floatval($array["$name"]);
+                        break;
+                    case 'STR':
+                        $array["$name"] = str_replace(array("\r", "\n"), ' ', addslashes(htmlspecialchars(trim(urldecode($array["$name"])))));
+                        break;
+                    case 'STR_HTML':
+                        $array["$name"] = addslashes(trim(urldecode($array["$name"])));
+                        break;
+                    default:
+                        $array["$name"] = '';
+                }
+            } else {
+                $array["$name"] = '';
+            }
+        }
+        return $array;
+    }
 
     public function my_json_encode($data) {
         if (is_array($data) || is_object($data)) {
@@ -300,78 +501,77 @@ class MobileAssistantConnector
         return $json;
     }
 
+    public function get_currencies() {
+        $all_currencies = array();
 
-    private function check_auth()
-    {
-        $options = get_option('mobassistantconnector');
+        $currency_code_options = get_woocommerce_currencies();
 
-        if ( hash( 'sha256', $options['login'] . $options['pass'] ) == $this->hash ) {
-            return true;
+        foreach ($currency_code_options as $code => $name) {
+            $all_currencies[] = array('code' => $code, 'name' => $name);
         }
 
-        return false;
+        return $all_currencies;
     }
 
 
-    protected function validate_types($array, $names)
-    {
-        foreach ($names as $name => $type) {
-            if (isset($array["$name"])) {
-                switch ($type) {
-                    case 'INT':
-                        $array["$name"] = intval($array["$name"]);
-                        break;
-                    case 'FLOAT':
-                        $array["$name"] = floatval($array["$name"]);
-                        break;
-                    case 'STR':
-                        $array["$name"] = str_replace(array("\r", "\n"), ' ', addslashes(htmlspecialchars(trim(urldecode($array["$name"])))));
-                        break;
-                    case 'STR_HTML':
-                        $array["$name"] = addslashes(trim(urldecode($array["$name"])));
-                        break;
-                    default:
-                        $array["$name"] = '';
-                }
-            } else {
-                $array["$name"] = '';
-            }
-        }
-        return $array;
+    public function get_store_title() {
+        $title = get_option('blogname');
+
+        return array('test' => 1, 'title' => $title);
     }
 
-    protected function validate_type($value, $type)
-    {
-        switch ($type) {
-            case 'INT':
-                $value = intval($value);
-                break;
-            case 'FLOAT':
-                $value = floatval($value);
-                break;
-            case 'STR':
-                $value = str_replace(array("\r", "\n"), ' ', addslashes(htmlspecialchars(trim($value))));
-                break;
-            case 'STR_HTML':
-                $value = addslashes(trim($value));
-                break;
-            default:
-        }
-        return $value;
-    }
 
-    //for address
-    protected function split_values($arr, $keys, $sign = ', ')
-    {
-        $new_arr = array();
-        foreach ($keys as $key) {
-            if (isset($arr[$key])) {
-                if (!is_null($arr[$key]) && $arr[$key] != '') {
-                    $new_arr[] = $arr[$key];
-                }
-            }
+    public function get_store_stats() {
+        $data_graphs = '';
+        $order_status_stats = array();
+        $store_stats = array('count_orders' => "0", 'total_sales' => "0", 'count_customers' => "0", 'count_products' => "0", "last_order_id" => "0", "new_orders" => "0");
+        $today = date("Y-m-d", time(0));
+        $date_from = $date_to = $today;
+
+        $data = array();
+
+        if (!empty($this->stats_from)) {
+            $date_from = $this->stats_from;
         }
-        return implode($sign, $new_arr);
+
+        if (!empty($this->stats_to)) {
+            $date_to = $this->stats_to;
+        }
+
+        if (!empty($this->custom_period) && strlen($this->custom_period) > 0) {
+            $custom_period = $this->get_custom_period($this->custom_period);
+
+            $date_from = $custom_period['start_date'];
+            $date_to = $custom_period['end_date'];
+        }
+
+        if (!empty($date_from)) {
+            $data['date_from'] = $date_from . " 00:00:00";
+        }
+
+        if (!empty($date_to)) {
+            $data['date_to'] = $date_to . " 23:59:59";
+        }
+
+        if (!empty($this->statuses)) {
+            $data['statuses'] = $this->get_filter_statuses($this->statuses);
+        }
+
+        $orders_stats = $this->_get_total_orders_i_products($data);
+        $store_stats = array_merge($store_stats, $orders_stats);
+
+        $customers_stats = $this->_get_total_customers($data);
+        $store_stats = array_merge($store_stats, $customers_stats);
+
+
+        if (!isset($this->data_for_widget) || empty($this->data_for_widget) || $this->data_for_widget != 1) {
+            $data_graphs = $this->get_data_graphs();
+            $order_status_stats = $this->get_status_stats();
+        }
+
+        $result = array_merge($store_stats, array('data_graphs' => $data_graphs), array('order_status_stats' => $order_status_stats));
+
+        return $result;
     }
 
     protected function get_custom_period($period)
@@ -479,80 +679,99 @@ class MobileAssistantConnector
         return $statuses;
     }
 
+    private function _get_total_orders_i_products($data) {
+        global $wpdb;
+        $query_where_parts = array();
 
-    public function get_currencies() {
-        $all_currencies = array();
+        $query_orders = "SELECT
+              COUNT(posts.ID) AS count_orders,
+              SUM(meta_order_total.meta_value) AS total_sales
+            FROM `{$wpdb->posts}` AS posts
+            LEFT JOIN `{$wpdb->postmeta}` AS meta_order_total ON meta_order_total.post_id = posts.ID AND meta_order_total.meta_key = '_order_total'";
 
-        $currency_code_options = get_woocommerce_currencies();
+        $query_products = "SELECT
+              SUM(meta_items_qty.meta_value) AS count_products
+            FROM `{$wpdb->posts}` AS posts
+            LEFT JOIN `{$wpdb->prefix}woocommerce_order_items` AS order_items ON order_items.order_id = posts.ID AND order_items.order_item_type = 'line_item'
+            LEFT JOIN `{$wpdb->prefix}woocommerce_order_itemmeta` AS meta_items_qty ON meta_items_qty.order_item_id = order_items.order_item_id AND meta_items_qty.meta_key = '_qty'";
 
-        foreach ($currency_code_options as $code => $name) {
-            $all_currencies[] = array('code' => $code, 'name' => $name);
+        if(!function_exists('wc_get_order_status_name')) {
+            $query = " LEFT JOIN `{$wpdb->term_relationships}` AS order_status_terms ON order_status_terms.object_id = posts.ID
+                            AND order_status_terms.term_taxonomy_id IN (SELECT term_taxonomy_id FROM `{$wpdb->term_taxonomy}` WHERE taxonomy = 'shop_order_status')
+                        LEFT JOIN `{$wpdb->terms}` AS status_terms ON status_terms.term_id = order_status_terms.term_taxonomy_id";
+            $query_orders .= $query;
+            $query_products .= $query;
         }
 
-        return $all_currencies;
+		$query_where_parts[] = " posts.post_type = 'shop_order' ";
+
+        if (isset($data['date_from'])) {
+            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(CONVERT_TZ(posts.post_date, '+00:00', @@global.time_zone)) >= '%d'", strtotime($data['date_from']));
+        }
+
+        if (isset($data['date_to'])) {
+            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(CONVERT_TZ(posts.post_date, '+00:00', @@global.time_zone)) <= '%d'", strtotime($data['date_to']));
+        }
+
+        if (isset($data['statuses'])) {
+            if(function_exists('wc_get_order_status_name')) {
+                $query_where_parts[] = sprintf(" posts.post_status IN ('%s')", $this->get_filter_statuses($data['statuses']));
+            } else {
+                $query_where_parts[] = sprintf(" status_terms.slug IN ('%s')", $this->get_filter_statuses($data['statuses']));
+            }
+        }
+
+        if(!empty($this->status_list_hide)) {
+            $query_where_parts[] = " posts.post_status NOT IN ( '" . implode( $this->status_list_hide, "', '") . "' )";
+        }
+
+        if(!empty($query_where_parts)) {
+            $query_orders .= " WHERE " . implode(" AND ", $query_where_parts);
+            $query_products .= " WHERE " . implode(" AND ", $query_where_parts);
+        }
+
+        $orders_stat = $wpdb->get_results($query_orders, ARRAY_A);
+        $orders_stat = array_shift($orders_stat);
+
+        $products_stat = $wpdb->get_results($query_products, ARRAY_A);
+        $products_stat = array_shift($products_stat);
+
+        $totals['count_orders'] = nice_count($orders_stat['count_orders']);
+        $totals['total_sales'] = nice_price($orders_stat['total_sales'], $this->currency);
+        $totals['count_products'] = nice_count($products_stat['count_products']);
+
+        return $totals;
     }
 
+    private function _get_total_customers($data) {
+        global $wpdb;
+        $query_where_parts = array();
 
-    public function get_store_title() {
-        $title = get_option('blogname');
+        $query = "SELECT COUNT(DISTINCT(c.ID)) AS count_customers
+                  FROM `{$wpdb->users}` AS c
+                      LEFT JOIN `{$wpdb->usermeta}` AS usermeta ON usermeta.user_id = c.ID";
 
-        return array('test' => 1, 'title' => $title);
+        $query_where_parts[] = " (usermeta.meta_key = '{$wpdb->prefix}capabilities' AND usermeta.meta_value LIKE '%customer%') ";
+
+        if(!empty($data['date_from'])) {
+            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(c.user_registered) >= '%d'", strtotime($data['date_from']));
+        }
+
+        if(!empty($data['date_to'])) {
+            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(c.user_registered) <= '%d'", strtotime($data['date_to']));
+        }
+
+
+        if(!empty($query_where_parts)) {
+            $query .= " WHERE " . implode(" AND ", $query_where_parts);
+        }
+
+        $totals = $wpdb->get_row($query, ARRAY_A);
+
+        $totals['count_customers'] = nice_count($totals['count_customers']);
+
+        return $totals;
     }
-
-
-    public function get_store_stats() {
-        $data_graphs = '';
-        $order_status_stats = array();
-        $store_stats = array('count_orders' => "0", 'total_sales' => "0", 'count_customers' => "0", 'count_products' => "0", "last_order_id" => "0", "new_orders" => "0");
-        $today = date("Y-m-d", time(0));
-        $date_from = $date_to = $today;
-
-        $data = array();
-
-        if (!empty($this->stats_from)) {
-            $date_from = $this->stats_from;
-        }
-
-        if (!empty($this->stats_to)) {
-            $date_to = $this->stats_to;
-        }
-
-        if (!empty($this->custom_period) && strlen($this->custom_period) > 0) {
-            $custom_period = $this->get_custom_period($this->custom_period);
-
-            $date_from = $custom_period['start_date'];
-            $date_to = $custom_period['end_date'];
-        }
-
-        if (!empty($date_from)) {
-            $data['date_from'] = $date_from . " 00:00:00";
-        }
-
-        if (!empty($date_to)) {
-            $data['date_to'] = $date_to . " 23:59:59";
-        }
-
-        if (!empty($this->statuses)) {
-            $data['statuses'] = $this->get_filter_statuses($this->statuses);
-        }
-
-        $orders_stats = $this->_get_total_orders_i_products($data);
-        $store_stats = array_merge($store_stats, $orders_stats);
-
-        $customers_stats = $this->_get_total_customers($data);
-        $store_stats = array_merge($store_stats, $customers_stats);
-
-
-        if (!isset($this->data_for_widget) || empty($this->data_for_widget) || $this->data_for_widget != 1) {
-            $data_graphs = $this->get_data_graphs();
-            $order_status_stats = $this->get_status_stats();
-        }
-
-        $result = array_merge($store_stats, array('data_graphs' => $data_graphs), array('order_status_stats' => $order_status_stats));
-
-        return $result;
-    }
-
 
     public function get_data_graphs() {
         global $wpdb;
@@ -724,7 +943,6 @@ class MobileAssistantConnector
         return array('orders' => $orders, 'customers' => $customers, 'average' => $average);
     }
 
-
     public function get_status_stats() {
         global $wpdb;
 
@@ -801,99 +1019,55 @@ class MobileAssistantConnector
         return $order_statuses;
     }
 
-
-    private function _get_total_customers($data) {
+    public function get_qr_code() {
         global $wpdb;
-        $query_where_parts = array();
 
-        $query = "SELECT COUNT(DISTINCT(c.ID)) AS count_customers
-                  FROM `{$wpdb->users}` AS c
-                      LEFT JOIN `{$wpdb->usermeta}` AS usermeta ON usermeta.user_id = c.ID";
+        $hash = $this->hash;
 
-        $query_where_parts[] = " (usermeta.meta_key = '{$wpdb->prefix}capabilities' AND usermeta.meta_value LIKE '%customer%') ";
+        $user = $wpdb->get_results( $wpdb->prepare( "SELECT `username`, `password` FROM `{$wpdb->prefix}mobileassistant_users` WHERE `qr_code_hash` = %s AND `status` = 1 LIMIT 1",
+            $hash ) , ARRAY_A );
 
-        if(!empty($data['date_from'])) {
-            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(c.user_registered) >= '%d'", strtotime($data['date_from']));
+        if ($user) {
+            $user = array_shift($user);
+            $config['url'] = $this->site_url;
+            $config['username'] = $user['username'];
+            $config['password'] = $user['password'];
+
+            $data_to_qr = base64_encode(json_encode($config));
+
+            echo '<html><head>
+            <meta http-equiv="Pragma" content="no-cache">
+            <title>QR-code for WooCommerce Mobile Assistant</title>
+            <script type="text/javascript" src="' . $this->site_url .'/wp-content/plugins/mobile-assistant-connector/js/qrcode.min.js"></script>
+               <style media="screen" type="text/css">
+                    img {
+                        margin:  auto;
+                    }
+                </style>
+            </head>
+                <body>
+                    <table width="100%"><tr><td id="mobassistantconnector_qrcode_img" style="padding: 30px"></td></tr></table>
+                    <input type="hidden" id="mobassistantconnector_base_url_hidden" value="">
+                </body>
+                <script type="text/javascript">
+                        (function() {
+                            var qrcode = new QRCode(document.getElementById("mobassistantconnector_qrcode_img"), {
+                                width : 300,
+                                height : 300
+                            });
+
+                            qrcode.makeCode("'.$data_to_qr.'");
+                })();
+                document.getElementById("mobassistantconnector_base_url_hidden").value="'.$this->site_url.'"
+                </script>
+            </html>';
+            die();
+//            get_footer();
+        } else {
+            return 'auth_error';
         }
 
-        if(!empty($data['date_to'])) {
-            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(c.user_registered) <= '%d'", strtotime($data['date_to']));
-        }
-
-
-        if(!empty($query_where_parts)) {
-            $query .= " WHERE " . implode(" AND ", $query_where_parts);
-        }
-
-        $totals = $wpdb->get_row($query, ARRAY_A);
-
-        $totals['count_customers'] = nice_count($totals['count_customers']);
-
-        return $totals;
-    }
-
-    private function _get_total_orders_i_products($data) {
-        global $wpdb;
-        $query_where_parts = array();
-
-        $query_orders = "SELECT
-              COUNT(posts.ID) AS count_orders,
-              SUM(meta_order_total.meta_value) AS total_sales
-            FROM `{$wpdb->posts}` AS posts
-            LEFT JOIN `{$wpdb->postmeta}` AS meta_order_total ON meta_order_total.post_id = posts.ID AND meta_order_total.meta_key = '_order_total'";
-
-        $query_products = "SELECT
-              SUM(meta_items_qty.meta_value) AS count_products
-            FROM `{$wpdb->posts}` AS posts
-            LEFT JOIN `{$wpdb->prefix}woocommerce_order_items` AS order_items ON order_items.order_id = posts.ID AND order_items.order_item_type = 'line_item'
-            LEFT JOIN `{$wpdb->prefix}woocommerce_order_itemmeta` AS meta_items_qty ON meta_items_qty.order_item_id = order_items.order_item_id AND meta_items_qty.meta_key = '_qty'";
-
-        if(!function_exists('wc_get_order_status_name')) {
-            $query = " LEFT JOIN `{$wpdb->term_relationships}` AS order_status_terms ON order_status_terms.object_id = posts.ID
-                            AND order_status_terms.term_taxonomy_id IN (SELECT term_taxonomy_id FROM `{$wpdb->term_taxonomy}` WHERE taxonomy = 'shop_order_status')
-                        LEFT JOIN `{$wpdb->terms}` AS status_terms ON status_terms.term_id = order_status_terms.term_taxonomy_id";
-            $query_orders .= $query;
-            $query_products .= $query;
-        }
-
-		$query_where_parts[] = " posts.post_type = 'shop_order' ";
-	
-        if (isset($data['date_from'])) {
-            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(CONVERT_TZ(posts.post_date, '+00:00', @@global.time_zone)) >= '%d'", strtotime($data['date_from']));
-        }
-
-        if (isset($data['date_to'])) {
-            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(CONVERT_TZ(posts.post_date, '+00:00', @@global.time_zone)) <= '%d'", strtotime($data['date_to']));
-        }
-
-        if (isset($data['statuses'])) {
-            if(function_exists('wc_get_order_status_name')) {
-                $query_where_parts[] = sprintf(" posts.post_status IN ('%s')", $this->get_filter_statuses($data['statuses']));
-            } else {
-                $query_where_parts[] = sprintf(" status_terms.slug IN ('%s')", $this->get_filter_statuses($data['statuses']));
-            }
-        }
-        
-        if(!empty($this->status_list_hide)) {
-            $query_where_parts[] = " posts.post_status NOT IN ( '" . implode( $this->status_list_hide, "', '") . "' )";
-        }
-
-        if(!empty($query_where_parts)) {
-            $query_orders .= " WHERE " . implode(" AND ", $query_where_parts);
-            $query_products .= " WHERE " . implode(" AND ", $query_where_parts);
-        }
-
-        $orders_stat = $wpdb->get_results($query_orders, ARRAY_A);
-        $orders_stat = array_shift($orders_stat);
-
-        $products_stat = $wpdb->get_results($query_products, ARRAY_A);
-        $products_stat = array_shift($products_stat);
-
-        $totals['count_orders'] = nice_count($orders_stat['count_orders']);
-        $totals['total_sales'] = nice_price($orders_stat['total_sales'], $this->currency);
-        $totals['count_products'] = nice_count($products_stat['count_products']);
-
-        return $totals;
+        return '';
     }
 
     public function get_orders() {
@@ -1060,6 +1234,17 @@ class MobileAssistantConnector
         );
     }
 
+    public function get_orders_statuses() {
+        $orders_statuses = array();
+
+        $statuses = _get_order_statuses();
+
+        foreach($statuses as $code => $name) {
+            $orders_statuses[] = array('st_id' => $code, 'st_name' => $name);
+        }
+
+        return $orders_statuses;
+    }
 
     public function get_orders_info() {
         global $woocommerce;
@@ -1200,57 +1385,126 @@ class MobileAssistantConnector
         return $order_full_info;
     }
 
+    private function _get_order_notes( $order_id, $fields = null ) {
+        $args = array(
+            'post_id' => $order_id,
+            'approve' => 'approve',
+            'type'    => 'order_note'
+        );
 
-    private function _get_order_products() {
-        global $wpdb;
+        remove_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_order_comments' ), 10, 1 );
+        remove_filter( 'comments_clauses', 'woocommerce_exclude_order_comments' );
 
-        $query = "SELECT
-                    meta_product_id.meta_value AS product_id,
-                    posts.post_title AS product_name,
-                    items_qty.meta_value AS product_quantity,
-                    meta_price.meta_value AS product_price,
-                    items_variation_id.meta_value AS variation_id,
-                    meta_sku.meta_value AS sku
-                  FROM `{$wpdb->prefix}woocommerce_order_items` AS order_items
-                    LEFT JOIN `{$wpdb->prefix}woocommerce_order_itemmeta` AS meta_product_id ON meta_product_id.order_item_id = order_items.order_item_id AND meta_product_id.meta_key = '_product_id'
-                    LEFT JOIN `{$wpdb->posts}` AS posts ON posts.ID = meta_product_id.meta_value
-                    LEFT JOIN `$wpdb->postmeta` AS meta_price ON posts.ID = meta_price.post_id AND meta_price.meta_key = '_price'
-                    LEFT JOIN `$wpdb->postmeta` AS meta_sku ON posts.ID = meta_sku.post_id AND meta_sku.meta_key = '_sku'
-                    LEFT JOIN `{$wpdb->prefix}woocommerce_order_itemmeta` AS items_qty ON items_qty.order_item_id = order_items.order_item_id AND items_qty.meta_key = '_qty'
-                    LEFT JOIN `{$wpdb->prefix}woocommerce_order_itemmeta` AS items_variation_id ON items_variation_id.order_item_id = order_items.order_item_id AND items_variation_id.meta_key = '_variation_id'
-                    LEFT JOIN `{$wpdb->posts}` AS posts_orders ON posts_orders.ID = order_items.order_id
-                WHERE order_items.order_item_type = 'line_item'
-                AND posts.post_type = 'product'
-                AND order_items.order_id = '%d'";
+        $notes = get_comments( $args );
 
-        if(!empty($this->status_list_hide)) {
-            $query .= " AND posts.post_status NOT IN ( '" . implode( $this->status_list_hide, "', '") . "' )";
+        add_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_order_comments' ), 10, 1 );
+        add_filter( 'comments_clauses', 'woocommerce_exclude_order_comments' );
+
+        $order_notes = array();
+
+        foreach ( $notes as $note ) {
+
+            $order_notes[] = current( $this->_get_order_note( $order_id, $note->comment_ID, $fields ) );
         }
 
-        if(!empty($status_list_hide)) {
-            $query_where_parts[] = " posts.post_status NOT IN ( '" . implode( $status_list_hide, "', '") . "' )";
+        $order_notes = apply_filters( 'woocommerce_api_order_notes_response', $order_notes, $order_id, $fields, $notes );
+
+        $notes = array();
+        foreach ($order_notes as $note) {
+            $temp_note = array('date_added' => $note['created_at'], 'note' => $note['note'],);
+
+            if ($note['customer_note'] == 1) {
+                $temp_note['note_type'] = __('Customer note', 'woocommerce');
+            } else {
+                $temp_note['note_type'] = __('Private note', 'woocommerce');
+            }
+
+            $notes[] = $temp_note;
         }
 
-        $query = sprintf($query, $this->order_id);
 
-        $results = $wpdb->get_results($query, ARRAY_A);
-
-        return $results;
+        //return apply_filters( 'woocommerce_api_order_notes_response', $order_notes, $order_id, $fields, $notes, $this->server );
+        //return array( 'order_notes' => apply_filters( 'woocommerce_api_order_notes_response', $order_notes, $order_id, $fields, $notes, $this->server ) );
+        return $notes;
     }
 
+    private function _get_order_note( $order_id, $id, $fields = null ) {
+        $id = absint( $id );
 
-    public function get_orders_statuses() {
-        $orders_statuses = array();
-
-        $statuses = _get_order_statuses();
-
-        foreach($statuses as $code => $name) {
-            $orders_statuses[] = array('st_id' => $code, 'st_name' => $name);
+        if ( empty( $id ) ) {
+            return new WP_Error( 'woocommerce_api_invalid_order_note_id', __( 'Invalid order note ID', 'woocommerce' ), array( 'status' => 400 ) );
         }
 
-        return $orders_statuses;
+        $note = get_comment( $id );
+
+        if ( is_null( $note ) ) {
+            return new WP_Error( 'woocommerce_api_invalid_order_note_id', __( 'An order note with the provided ID could not be found', 'woocommerce' ), array( 'status' => 404 ) );
+        }
+
+        $order_note = array(
+            'id'            => $note->comment_ID,
+            'created_at'    => $this->_parse_datetime( $note->comment_date_gmt ),
+            'note'          => $note->comment_content,
+            'customer_note' => get_comment_meta( $note->comment_ID, 'is_customer_note', true ) ? true : false,
+        );
+
+        return array( 'order_note' => apply_filters( 'woocommerce_api_order_note_response', $order_note, $id, $fields, $note, $order_id, $this ) );
     }
 
+    private function _parse_datetime($datetime) {
+        // Strip millisecond precision (a full stop followed by one or more digits)
+        if (strpos($datetime, '.') !== false) {
+            $datetime = preg_replace('/\.\d+/', '', $datetime);
+        }
+
+        // default timezone to UTC
+        $datetime = preg_replace('/[+-]\d+:+\d+$/', '+00:00', $datetime);
+
+        try {
+            $datetime = new DateTime($datetime, new DateTimeZone('UTC'));
+
+        } catch (Exception $e) {
+            $datetime = new DateTime('@0');
+        }
+
+        return $datetime->format('Y-m-d H:i:s');
+    }
+
+    private function _get_product_type($product_id) {
+        if(function_exists('wc_get_product')) {
+            $the_product = wc_get_product( $product_id );
+        } else {
+            $the_product = get_product($product_id);
+        }
+
+        $type = '';
+        if ( 'grouped' == $the_product->product_type ) {
+            $type = __( 'Grouped', 'woocommerce' );
+
+        } elseif ( 'external' == $the_product->product_type ) {
+            $type = __( 'External/Affiliate', 'woocommerce' );
+
+        } elseif ( 'simple' == $the_product->product_type ) {
+
+            if ( $the_product->is_virtual() ) {
+                $type = __( 'Virtual', 'woocommerce' );
+
+            } elseif ( $the_product->is_downloadable() ) {
+                $type = __( 'Downloadable', 'woocommerce' );
+
+            } else {
+                $type = __( 'Simple', 'woocommerce' );
+            }
+
+        } elseif ( 'variable' == $the_product->product_type ) {
+            $type = __( 'Variable', 'woocommerce' );
+
+        } else {
+            $type = ucfirst( $the_product->product_type );
+        }
+
+        return $type;
+    }
 
     public function get_customers() {
         global $wpdb;
@@ -1356,7 +1610,6 @@ class MobileAssistantConnector
         );
     }
 
-
     public function get_customers_info() {
         //global $wp_roles;
 
@@ -1446,7 +1699,6 @@ class MobileAssistantConnector
         return $customer_info;
     }
 
-
     private function _get_customer_orders($id) {
         global $wpdb;
 
@@ -1529,7 +1781,6 @@ class MobileAssistantConnector
         return $orders_total;
     }
 
-
     public function search_products() {
         global $wpdb;
 
@@ -1557,6 +1808,108 @@ class MobileAssistantConnector
         return $products;
     }
 
+    private function _get_products($fields, $fields_total, $sql) {
+        global $wpdb;
+        $query_where_parts = array();
+
+        $query = $fields . $sql;
+        $query_total = $fields_total . $sql;
+
+        if(!empty($this->params) && !empty($this->val)) {
+            $params = explode("|", $this->params);
+
+            foreach($params as $param) {
+                switch ($param) {
+                    case 'pr_id':
+                        $query_params_parts[] = sprintf(" posts.ID LIKE '%%%s%%'", $this->val);
+                        break;
+                    case 'pr_sku':
+                        $query_params_parts[] = sprintf(" meta_sku.meta_value LIKE '%%%s%%'", $this->val);
+                        break;
+                    case 'pr_name':
+                        $query_params_parts[] = sprintf(" posts.post_title LIKE '%%%s%%'", $this->val);
+                        break;
+                }
+            }
+        }
+		 if(!empty($this->status_list_hide)) {
+			$query_where_parts[] = " posts.post_status NOT IN ( '" . implode( $this->status_list_hide, "', '") . "' )";
+		}
+
+        if(!empty($this->statuses)) {
+            if(function_exists('wc_get_order_status_name')) {
+                $query_where_parts[] = sprintf(" posts_orders.post_status IN ('%s')", $this->get_filter_statuses($this->statuses));
+            } else {
+                $query_where_parts[] = sprintf(" status_terms.slug IN ('%s')", $this->get_filter_statuses($this->statuses));
+            }
+        }
+
+        if (!empty($this->products_from)) {
+            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(CONVERT_TZ(posts_orders.post_date, '+00:00', @@global.time_zone)) >= '%d'", strtotime($this->products_from . " 00:00:00"));
+        }
+
+        if (!empty($this->products_to)) {
+            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(CONVERT_TZ(posts_orders.post_date, '+00:00', @@global.time_zone)) <= '%d'", strtotime($this->products_to . " 23:59:59"));
+        }
+
+        if (!empty($query_params_parts)) {
+            $query_where_parts[] = " ( " . implode(" OR ", $query_params_parts) . " )";
+        }
+
+
+        if (!empty($query_where_parts)) {
+            $query .= " AND " . implode(" AND ", $query_where_parts);
+            $query_total .= " AND " . implode(" AND ", $query_where_parts);
+        }
+
+        if(empty($this->sort_by)) {
+            $this->sort_by = "id";
+        }
+
+        $query .= " GROUP BY posts.ID ORDER BY ";
+        switch ($this->sort_by) {
+            case 'id':
+                $query .= "posts.ID DESC";
+                break;
+            case 'name':
+                $query .= "posts.post_title ASC";
+                break;
+            case 'total':
+                $query .= "meta_price.meta_value ASC";
+                break;
+            case 'qty':
+                $query .= "meta_stock.meta_value ASC";
+                break;
+        }
+
+        $query .= sprintf(" LIMIT %d, %d", (($this->page - 1)*$this->show), $this->show);
+
+        $products_count = array("count_prods" => 0,);
+        if($row_total = $wpdb->get_row($query_total, ARRAY_A)) {
+            $products_count = $row_total;
+        }
+
+        $products = array();
+        $results = $wpdb->get_results( $query, ARRAY_A );
+        foreach($results as $product) {
+            $product['sale_price'] = isset($product['sale_price']) ? nice_price($product['sale_price'], $this->currency) : NULL ;
+            $product['price'] = nice_price($product['price'], $this->currency);
+            $product['quantity'] = intval($product['quantity']);
+            $product['product_type'] = $this->_get_product_type($product['product_id']);
+
+            $attachment_id = get_post_thumbnail_id( $product['product_id'] );
+            $id_image = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
+            $product['thumbnail'] = $id_image[0];
+
+            $products[] = $product;
+        }
+
+        return array("products_count" => nice_count($products_count['count_prods']), "products" => $products);;
+    }
+
+
+
+//== PUSH ===========================================================================
 
     public function search_products_ordered() {
         global $wpdb;
@@ -1596,101 +1949,6 @@ class MobileAssistantConnector
 
         return $products;
     }
-
-
-    private function _get_products($fields, $fields_total, $sql) {
-        global $wpdb;
-        $query_where_parts = array();
-
-        $query = $fields . $sql;
-        $query_total = $fields_total . $sql;
-
-        if(!empty($this->params) && !empty($this->val)) {
-            $params = explode("|", $this->params);
-			
-            foreach($params as $param) {
-                switch ($param) {
-                    case 'pr_id':
-                        $query_params_parts[] = sprintf(" posts.ID LIKE '%%%s%%'", $this->val);
-                        break;
-                    case 'pr_sku':
-                        $query_params_parts[] = sprintf(" meta_sku.meta_value LIKE '%%%s%%'", $this->val);
-                        break;
-                    case 'pr_name':
-                        $query_params_parts[] = sprintf(" posts.post_title LIKE '%%%s%%'", $this->val);
-                        break;
-                }
-            }
-        }
-		 if(!empty($this->status_list_hide)) {
-			$query_where_parts[] = " posts.post_status NOT IN ( '" . implode( $this->status_list_hide, "', '") . "' )";
-		}
-		
-        if(!empty($this->statuses)) {
-            if(function_exists('wc_get_order_status_name')) {
-                $query_where_parts[] = sprintf(" posts_orders.post_status IN ('%s')", $this->get_filter_statuses($this->statuses));
-            } else {
-                $query_where_parts[] = sprintf(" status_terms.slug IN ('%s')", $this->get_filter_statuses($this->statuses));
-            }
-        }
-
-        if (!empty($this->products_from)) {
-            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(CONVERT_TZ(posts_orders.post_date, '+00:00', @@global.time_zone)) >= '%d'", strtotime($this->products_from . " 00:00:00"));
-        }
-
-        if (!empty($this->products_to)) {
-            $query_where_parts[] = sprintf(" UNIX_TIMESTAMP(CONVERT_TZ(posts_orders.post_date, '+00:00', @@global.time_zone)) <= '%d'", strtotime($this->products_to . " 23:59:59"));
-        }
-
-        if (!empty($query_params_parts)) {
-            $query_where_parts[] = " ( " . implode(" OR ", $query_params_parts) . " )";
-        }
-
-
-        if (!empty($query_where_parts)) {
-            $query .= " AND " . implode(" AND ", $query_where_parts);
-            $query_total .= " AND " . implode(" AND ", $query_where_parts);
-        }
-
-        if(empty($this->sort_by)) {
-            $this->sort_by = "id";
-        }
-
-        $query .= " GROUP BY posts.ID ORDER BY ";
-        switch ($this->sort_by) {
-            case 'id':
-                $query .= "posts.ID DESC";
-                break;
-            case 'name':
-                $query .= "posts.post_title ASC";
-                break;
-        }
-
-        $query .= sprintf(" LIMIT %d, %d", (($this->page - 1)*$this->show), $this->show);
-
-        $products_count = array("count_prods" => 0,);
-        if($row_total = $wpdb->get_row($query_total, ARRAY_A)) {
-            $products_count = $row_total;
-        }
-
-        $products = array();
-        $results = $wpdb->get_results( $query, ARRAY_A );
-        foreach($results as $product) {
-            $product['sale_price'] = isset($product['sale_price']) ? nice_price($product['sale_price'], $this->currency) : NULL ;
-            $product['price'] = nice_price($product['price'], $this->currency);
-            $product['quantity'] = intval($product['quantity']);
-            $product['product_type'] = $this->_get_product_type($product['product_id']);
-
-            $attachment_id = get_post_thumbnail_id( $product['product_id'] );
-            $id_image = wp_get_attachment_image_src( $attachment_id, 'thumbnail' );
-            $product['thumbnail'] = $id_image[0];
-
-            $products[] = $product;
-        }
-
-        return array("products_count" => nice_count($products_count['count_prods']), "products" => $products);;
-    }
-
 
     public function get_products_info() {
         global $wpdb;
@@ -1733,9 +1991,9 @@ class MobileAssistantConnector
         $product['price'] = nice_price($product['price'], $this->currency);
         $product['quantity'] = intval($product['quantity']);
         $product['total_ordered'] = intval($product['total_ordered']);
-		
+
 		$stat = 'Undefined';
-		
+
         switch ( $product['post_status'] ) {
             case 'publish' :
             case 'private' :
@@ -1772,42 +2030,6 @@ class MobileAssistantConnector
         return $product;
     }
 
-    private function _get_product_type($product_id) {
-        if(function_exists('wc_get_product')) {
-            $the_product = wc_get_product( $product_id );
-        } else {
-            $the_product = get_product($product_id);
-        }
-
-        $type = '';
-        if ( 'grouped' == $the_product->product_type ) {
-            $type = __( 'Grouped', 'woocommerce' );
-
-        } elseif ( 'external' == $the_product->product_type ) {
-            $type = __( 'External/Affiliate', 'woocommerce' );
-
-        } elseif ( 'simple' == $the_product->product_type ) {
-
-            if ( $the_product->is_virtual() ) {
-                $type = __( 'Virtual', 'woocommerce' );
-
-            } elseif ( $the_product->is_downloadable() ) {
-                $type = __( 'Downloadable', 'woocommerce' );
-
-            } else {
-                $type = __( 'Simple', 'woocommerce' );
-            }
-
-        } elseif ( 'variable' == $the_product->product_type ) {
-            $type = __( 'Variable', 'woocommerce' );
-
-        } else {
-            $type = ucfirst( $the_product->product_type );
-        }
-
-        return $type;
-    }
-
     public function get_products_descr() {
         global $wpdb;
 
@@ -1821,7 +2043,6 @@ class MobileAssistantConnector
 
         return false;
     }
-
 
     public function set_order_action() {
         if ($this->order_id <= 0) {
@@ -1861,48 +2082,54 @@ class MobileAssistantConnector
         return array('error' => $error);
     }
 
-
-
-//== PUSH ===========================================================================
-
     public function push_notification_settings() {
         $data = array();
 
         if(empty($this->registration_id)) {
             $error = 'Empty device ID';
             log_me('PUSH SETTINGS ERROR: ' . $error);
-            return array('error' => $error);
+            return array('error' => 'missing_parameters');
         }
 
         if(empty($this->app_connection_id) || $this->app_connection_id < 0) {
             $error = 'Wrong app connection ID: ' . $this->app_connection_id;
             log_me('PUSH SETTINGS ERROR: ' . $error);
-            return array('error' => $error);
+            return array('error' => 'missing_parameters');
         }
 
         if(empty($this->api_key)) {
             $error = 'Empty application API key';
             log_me('PUSH SETTINGS ERROR: ' . $error);
-            return array('error' => $error);
+            return array('error' => 'missing_parameters');
         }
 
+        // update current API KEY
         $options = get_option('mobassistantconnector');
         if(!isset($options['mobassist_api_key']) || $options['mobassist_api_key'] != $this->api_key) {
             $options['mobassist_api_key'] = $this->api_key;
             update_option('mobassistantconnector', $options);
         }
 
+        $data['account_id'] = $this->getAccountIdByEmail((string) $this->account_email);
+
         $data['registration_id'] = $this->registration_id;
         $data['app_connection_id'] = $this->app_connection_id;
         $data['push_new_order'] = $this->push_new_order;
         $data['push_order_statuses'] = $this->push_order_statuses;
         $data['push_new_customer'] = $this->push_new_customer;
-//        $data['push_currency_code'] = $this->push_currency_code;
+        $data['push_currency_code'] = ((isset($this->push_currency_code) && !empty($this->push_currency_code) && ($this->push_currency_code !== 'not_set')) ? $this->push_currency_code : $this->currency);
         $data['device_unique'] = (string) $this->device_unique_id;
-        $data['account_email'] = (string) $this->account_email;
+//        $data['account_email'] = (string) $this->account_email;
         $data['device_name'] = (string) $this->device_name;
         $data['date'] = date( 'Y-m-d H:i:s' );
         $data['status'] = 1;
+
+        $device_id = $this->InsertAndUpdateDevice($data['device_unique'], $data['account_id'], $data['device_name'], $data['date']);
+
+        $data['device_unique_id'] = $device_id;
+
+        $data['user_id'] = (int)Mobassistantconnector_Access::get_user_id_by_session_key($this->session_key);
+        $data['user_actions'] = Mobassistantconnector_Access::get_allowed_actions_by_user_id($data['user_id']);
 
         if(!empty($this->registration_id_old)) {
             $data['registration_id_old'] = $this->registration_id_old;
@@ -1912,23 +2139,17 @@ class MobileAssistantConnector
             return array('success' => 'true');
         }
 
-        $error = 'Unknown occurred!';
+        $error = 'could_not_update_data';
         log_me('PUSH SETTINGS ERROR: ' . $error);
         return array('error' => $error);
     }
 
-
     public function savePushNotificationSettings($data = array()) {
         global $wpdb;
+
         $query_values = array();
         $query_where = array();
-
-        $sql = $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}mobileassistant_devices` (`device_unique`, `account_email`, `device_name`, `last_activity`)
-            VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE	`account_email` = %s, `device_name` = %s, `last_activity` = %s", $data['device_unique'],
-            $data['account_email'], $data['device_name'], $data['date'], $data['account_email'], $data['device_name'], $data['date'] );
-        $wpdb->query( $sql );
-        $id = $wpdb->get_var( $wpdb->prepare( "SELECT `device_unique_id` FROM `{$wpdb->prefix}mobileassistant_devices` WHERE `device_unique` = %s",
-            $data['device_unique'] ) );
+        $result = false;
 
         if(isset($data['registration_id_old'])) {
             $sql = "UPDATE `{$wpdb->prefix}mobileassistant_push_settings` SET registration_id = '%s' WHERE registration_id = '%s'";
@@ -1936,21 +2157,45 @@ class MobileAssistantConnector
             $wpdb->query($sql);
         }
 
+        // Delete empty record
         if(empty($data['push_new_order']) && empty($data['push_order_statuses']) && empty($data['push_new_customer'])) {
             $sql_del = "DELETE FROM `{$wpdb->prefix}mobileassistant_push_settings` WHERE registration_id = '%s' AND app_connection_id = '%s'";
             $sql_del = sprintf($sql_del, $data['registration_id'], $data['app_connection_id']);
 
             $wpdb->query($sql_del);
 
+            Mobassistantconnector_Functions::delete_empty_devices();
+            Mobassistantconnector_Functions::delete_empty_accounts();
+
             return true;
+        }
+
+        // Check if device could have higher permissions
+        if (in_array('push_notification_settings_new_order', $data['user_actions'])) {
+            $data['push_new_order'] = (int)$this->push_new_order;
+        } else {
+            $data['push_new_order'] = 0;
+        }
+
+        if (in_array('push_notification_settings_new_customer', $data['user_actions'])) {
+            $data['push_new_customer'] = (int)$this->push_new_customer;
+        } else {
+            $data['push_new_customer'] = 0;
+        }
+
+        if (in_array('push_notification_settings_order_statuses', $data['user_actions'])) {
+            $data['push_order_statuses'] = (string)$this->push_order_statuses;
+        } else {
+            $data['push_order_statuses'] = 0;
         }
 
         $query_values[] = sprintf(" push_new_order = '%d'", $data['push_new_order']);
         $query_values[] = sprintf(" push_order_statuses = '%s'", $data['push_order_statuses']);
         $query_values[] = sprintf(" push_new_customer = '%d'", $data['push_new_customer']);
-//        $query_values[] = sprintf(" push_currency_code = '%s'", $data['push_currency_code']);
-        $query_values[] = sprintf( " `device_unique_id` = %d", $id );
+        $query_values[] = sprintf(" push_currency_code = '%s'", $data['push_currency_code']);
+        $query_values[] = sprintf( " `device_unique_id` = %d", $data['device_unique_id'] );
 
+        // Get devices with same reg_id and con_id
         $sql = "SELECT setting_id FROM `{$wpdb->prefix}mobileassistant_push_settings`
                 WHERE registration_id = '%s' AND app_connection_id = '%s'";
 
@@ -1969,7 +2214,9 @@ class MobileAssistantConnector
 
             $query_values[] = sprintf(" registration_id = '%s'", $data['registration_id']);
             $query_values[] = sprintf(" app_connection_id = '%s'", $data['app_connection_id']);
+
             $query_values[] = sprintf( " `status` = %d", $data['status'] );
+            $query_values[] = sprintf( " `user_id` = %d", $data['user_id'] );
 
             $sql = "INSERT INTO `{$wpdb->prefix}mobileassistant_push_settings` SET ";
 
@@ -1977,8 +2224,8 @@ class MobileAssistantConnector
                 $sql .= implode(" , ", $query_values);
             }
 
-            $wpdb->query($sql);
-            return true;
+            $result = $wpdb->query($sql);
+//            return true;
 
         } else {
             $query_where[] = sprintf(" registration_id = '%s'", $data['registration_id']);
@@ -1994,12 +2241,19 @@ class MobileAssistantConnector
                 $sql .= " WHERE " . implode(" AND ", $query_where);
             }
 
-            $wpdb->query($sql);
-            return true;
+            $result = $wpdb->query($sql);
+//            return true;
         }
 
-        return false;
+        if ($result) {
+            $result = true;
+        }
+
+        return $result;
     }
+
+
+//== PRIVATE ===========================================================================
 
     public function delete_push_config() {
         global $wpdb;
@@ -2018,140 +2272,66 @@ class MobileAssistantConnector
             $ret = array('error' => 'missing_parameters');
         }
 
-        delete_empty_devices();
+        Mobassistantconnector_Functions::delete_empty_devices();
+        Mobassistantconnector_Functions::delete_empty_accounts();
 
         return $ret;
     }
 
-    private function map_push_notification_to_device() {
-        global $wpdb;
-
-        if ( ! $this->registration_id || ! $this->device_unique_id || $this->call_function == 'delete_push_config' ) {
-            return;
-        }
-
-        $date          = date('Y-m-d H:i:s');
-        $account_email = '';
-        $device_name   = '';
-
-        if ( isset( $_REQUEST['account_email'] ) ) {
-            $account_email = $_REQUEST['account_email'];
-        }
-
-        if ( isset( $_REQUEST['device_name'] ) ) {
-            $device_name = $_REQUEST['device_name'];
-        }
-
-        $sql = $wpdb->prepare( "INSERT INTO `{$wpdb->prefix}mobileassistant_devices` (`device_unique`, `account_email`, `device_name`, `last_activity`)
-			VALUES (%s, %s, %s, %s) ON DUPLICATE KEY UPDATE `account_email` = %s, `device_name` = %s, `last_activity` = %s",
-            $this->device_unique_id, $account_email, $device_name, $date, $account_email, $device_name, $date);
-        $result = $wpdb->query($sql);
-
-        if ( false !== $result ) {
-            $id = $wpdb->get_var( $wpdb->prepare( "SELECT `device_unique_id` FROM `{$wpdb->prefix}mobileassistant_devices` WHERE `device_unique` = %s",
-                $this->device_unique_id ) );
-            $wpdb->update( "{$wpdb->prefix}mobileassistant_push_settings", array( 'device_unique_id' => $id ),
-                array( 'registration_id' => $this->registration_id ), array( '%d' ), array( '%s' ) );
-        }
-    }
-
-    private function update_device_last_activity() {
-        global $wpdb;
-
-        if ( isset( $_REQUEST['device_unique_id'] ) ) {
-            $wpdb->update( "{$wpdb->prefix}mobileassistant_devices", array( 'last_activity' => date( 'Y-m-d H:i:s' ) ),
-                array( 'device_unique' => $_REQUEST['device_unique_id'] ), array( '%s' ), array( '%s' ) );
-        }
-    }
-
-
-//== PRIVATE ===========================================================================
-
-    private function _parse_datetime($datetime) {
-        // Strip millisecond precision (a full stop followed by one or more digits)
-        if (strpos($datetime, '.') !== false) {
-            $datetime = preg_replace('/\.\d+/', '', $datetime);
-        }
-
-        // default timezone to UTC
-        $datetime = preg_replace('/[+-]\d+:+\d+$/', '+00:00', $datetime);
-
-        try {
-            $datetime = new DateTime($datetime, new DateTimeZone('UTC'));
-
-        } catch (Exception $e) {
-            $datetime = new DateTime('@0');
-        }
-
-        return $datetime->format('Y-m-d H:i:s');
-    }
-
-
-    private function _get_order_notes( $order_id, $fields = null ) {
-        $args = array(
-            'post_id' => $order_id,
-            'approve' => 'approve',
-            'type'    => 'order_note'
-        );
-
-        remove_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_order_comments' ), 10, 1 );
-        remove_filter( 'comments_clauses', 'woocommerce_exclude_order_comments' );
-
-        $notes = get_comments( $args );
-
-        add_filter( 'comments_clauses', array( 'WC_Comments', 'exclude_order_comments' ), 10, 1 );
-        add_filter( 'comments_clauses', 'woocommerce_exclude_order_comments' );
-
-        $order_notes = array();
-
-        foreach ( $notes as $note ) {
-
-            $order_notes[] = current( $this->_get_order_note( $order_id, $note->comment_ID, $fields ) );
-        }
-
-        $order_notes = apply_filters( 'woocommerce_api_order_notes_response', $order_notes, $order_id, $fields, $notes );
-
-        $notes = array();
-        foreach ($order_notes as $note) {
-            $temp_note = array('date_added' => $note['created_at'], 'note' => $note['note'],);
-
-            if ($note['customer_note'] == 1) {
-                $temp_note['note_type'] = __('Customer note', 'woocommerce');
-            } else {
-                $temp_note['note_type'] = __('Private note', 'woocommerce');
+    protected function split_values($arr, $keys, $sign = ', ')
+    {
+        $new_arr = array();
+        foreach ($keys as $key) {
+            if (isset($arr[$key])) {
+                if (!is_null($arr[$key]) && $arr[$key] != '') {
+                    $new_arr[] = $arr[$key];
+                }
             }
-
-            $notes[] = $temp_note;
         }
-
-
-        //return apply_filters( 'woocommerce_api_order_notes_response', $order_notes, $order_id, $fields, $notes, $this->server );
-        //return array( 'order_notes' => apply_filters( 'woocommerce_api_order_notes_response', $order_notes, $order_id, $fields, $notes, $this->server ) );
-        return $notes;
+        return implode($sign, $new_arr);
     }
 
+    private function test_default_password_is_changed() {
+        $options = get_option('mobassistantconnector');
 
-    private function _get_order_note( $order_id, $id, $fields = null ) {
-        $id = absint( $id );
+        return !($options['login'] == '1' && md5($options['pass']) == 'c4ca4238a0b923820dcc509a6f75849b');
+    }
 
-        if ( empty( $id ) ) {
-            return new WP_Error( 'woocommerce_api_invalid_order_note_id', __( 'Invalid order note ID', 'woocommerce' ), array( 'status' => 400 ) );
+    private function _get_order_products() {
+        global $wpdb;
+
+        $query = "SELECT
+                    meta_product_id.meta_value AS product_id,
+                    posts.post_title AS product_name,
+                    items_qty.meta_value AS product_quantity,
+                    meta_price.meta_value AS product_price,
+                    items_variation_id.meta_value AS variation_id,
+                    meta_sku.meta_value AS sku
+                  FROM `{$wpdb->prefix}woocommerce_order_items` AS order_items
+                    LEFT JOIN `{$wpdb->prefix}woocommerce_order_itemmeta` AS meta_product_id ON meta_product_id.order_item_id = order_items.order_item_id AND meta_product_id.meta_key = '_product_id'
+                    LEFT JOIN `{$wpdb->posts}` AS posts ON posts.ID = meta_product_id.meta_value
+                    LEFT JOIN `$wpdb->postmeta` AS meta_price ON posts.ID = meta_price.post_id AND meta_price.meta_key = '_price'
+                    LEFT JOIN `$wpdb->postmeta` AS meta_sku ON posts.ID = meta_sku.post_id AND meta_sku.meta_key = '_sku'
+                    LEFT JOIN `{$wpdb->prefix}woocommerce_order_itemmeta` AS items_qty ON items_qty.order_item_id = order_items.order_item_id AND items_qty.meta_key = '_qty'
+                    LEFT JOIN `{$wpdb->prefix}woocommerce_order_itemmeta` AS items_variation_id ON items_variation_id.order_item_id = order_items.order_item_id AND items_variation_id.meta_key = '_variation_id'
+                    LEFT JOIN `{$wpdb->posts}` AS posts_orders ON posts_orders.ID = order_items.order_id
+                WHERE order_items.order_item_type = 'line_item'
+                AND posts.post_type = 'product'
+                AND order_items.order_id = '%d'";
+
+        if(!empty($this->status_list_hide)) {
+            $query .= " AND posts.post_status NOT IN ( '" . implode( $this->status_list_hide, "', '") . "' )";
         }
 
-        $note = get_comment( $id );
-
-        if ( is_null( $note ) ) {
-            return new WP_Error( 'woocommerce_api_invalid_order_note_id', __( 'An order note with the provided ID could not be found', 'woocommerce' ), array( 'status' => 404 ) );
+        if(!empty($status_list_hide)) {
+            $query_where_parts[] = " posts.post_status NOT IN ( '" . implode( $status_list_hide, "', '") . "' )";
         }
 
-        $order_note = array(
-            'id'            => $note->comment_ID,
-            'created_at'    => $this->_parse_datetime( $note->comment_date_gmt ),
-            'note'          => $note->comment_content,
-            'customer_note' => get_comment_meta( $note->comment_ID, 'is_customer_note', true ) ? true : false,
-        );
+        $query = sprintf($query, $this->order_id);
 
-        return array( 'order_note' => apply_filters( 'woocommerce_api_order_note_response', $order_note, $id, $fields, $note, $order_id, $this ) );
+        $results = $wpdb->get_results($query, ARRAY_A);
+
+        return $results;
     }
 }
 
@@ -2263,28 +2443,30 @@ function sendOrderPushMessage($order, $type) {
     $url = str_replace("https://", "", $url);
 
     foreach($push_devices as $push_device) {
-//        if(empty($push_device['push_currency_code']) || $push_device['push_currency_code'] == 'not_set') {
-//            $currency_code = $order->get_order_currency();
-//
-//        } else if($push_device['push_currency_code'] == 'base_currency') {
+        if (!empty($push_device['registration_id']) && $push_device['app_connection_id'] > 0) {
+            //        if(empty($push_device['push_currency_code']) || $push_device['push_currency_code'] == 'not_set') {
+            //            $currency_code = $order->get_order_currency();
+            //
+            //        } else if($push_device['push_currency_code'] == 'base_currency') {
             $currency_code = get_woocommerce_currency();
 
-//        } else {
-//            $currency_code = $push_device['push_currency_code'];
-//        }
+            //        } else {
+            //            $currency_code = $push_device['push_currency_code'];
+            //        }
 
-        $message = array(
-            "push_notif_type" => $type,
-            "order_id" => $order->id,
-            "customer_name" => $order->billing_first_name . ' ' . $order->billing_last_name,
-            "email" => $order->billing_email,
-            "new_status" => _get_order_status_name($order->id, $order->status),
-            "total" => nice_price($order->get_total(), $currency_code),
-            "store_url" => $url,
-            "app_connection_id" => $push_device['app_connection_id']
-        );
+            $message = array(
+                "push_notif_type"   => $type,
+                "order_id"          => $order->id,
+                "customer_name"     => $order->billing_first_name . ' ' . $order->billing_last_name,
+                "email"             => $order->billing_email,
+                "new_status"        => _get_order_status_name($order->id, $order->status),
+                "total"             => nice_price($order->get_total(), $currency_code),
+                "store_url"         => $url,
+                "app_connection_id" => $push_device['app_connection_id']
+            );
 
-        sendPush2Google($push_device['setting_id'], $push_device['registration_id'], $message);
+            sendPush2Google($push_device['setting_id'], $push_device['registration_id'], $message);
+        }
     }
 }
 
@@ -2309,16 +2491,18 @@ function sendCustomerPushMessage($customer) {
     }
 
     foreach($push_devices as $push_device) {
-        $message = array(
-            "push_notif_type" => $type,
-            "customer_id" => $customer->ID,
-            "customer_name" => $customer_name,
-            "email" => $customer->user_email,
-            "store_url" => $url,
-            "app_connection_id" => $push_device['app_connection_id']
-        );
+        if (!empty($push_device['registration_id']) && $push_device['app_connection_id'] > 0) {
+            $message = array(
+                "push_notif_type"   => $type,
+                "customer_id"       => $customer->ID,
+                "customer_name"     => $customer_name,
+                "email"             => $customer->user_email,
+                "store_url"         => $url,
+                "app_connection_id" => $push_device['app_connection_id']
+            );
 
-        sendPush2Google($push_device['setting_id'], $push_device['registration_id'], $message);
+            sendPush2Google($push_device['setting_id'], $push_device['registration_id'], $message);
+        }
     }
 }
 
@@ -2404,6 +2588,9 @@ function onResponse($setting_id, $response, $info) {
             }
         }
     }
+
+    Mobassistantconnector_Functions::delete_empty_devices();
+    Mobassistantconnector_Functions::delete_empty_accounts();
 }
 
 
@@ -2419,7 +2606,8 @@ function updatePushRegId($setting_id, $new_reg_id) {
 function deletePushRegId($setting_id) {
     global $wpdb;
 
-    $sql = "DELETE FROM `{$wpdb->prefix}mobileassistant_push_settings` WHERE setting_id = '%d'";
+    $sql = "DELETE FROM `{$wpdb->prefix}mobileassistant_push_settings`
+            WHERE setting_id = '%d'";
     $sql = sprintf($sql, $setting_id);
     $wpdb->query($sql);
 }
@@ -2428,26 +2616,33 @@ function deletePushRegId($setting_id) {
 function getPushDevices($data = array()) {
     global $wpdb;
 
-    $sql = "SELECT setting_id, registration_id, app_connection_id FROM `{$wpdb->prefix}mobileassistant_push_settings` ";
-    $query_where = array( ' `status` = 1 ' );
+    $sql = "SELECT ms.`setting_id`, ms.`registration_id`, ms.`app_connection_id`, ms.`push_currency_code`
+            FROM `{$wpdb->prefix}mobileassistant_push_settings` ms
+              LEFT JOIN `{$wpdb->prefix}mobileassistant_devices` md ON md.`device_unique_id` = ms.`device_unique_id`
+              LEFT JOIN `{$wpdb->prefix}mobileassistant_accounts` ma ON ma.`id` = md.`account_id`
+              LEFT JOIN `{$wpdb->prefix}mobileassistant_users` mu ON ms.`user_id` = mu.`user_id`
+    ";
+//    $query_where = array( ' `status` = 1 ' );
 
     switch ($data['type']) {
         case PUSH_TYPE_NEW_ORDER:
-            $query_where[] = " push_new_order = '1' ";
+            $query_where[] = " ms.`push_new_order` = '1' ";
             break;
 
         case PUSH_TYPE_CHANGE_ORDER_STATUS:
-            $query_where[] = sprintf(" (push_order_statuses = '%s' OR push_order_statuses LIKE '%%|%s' OR push_order_statuses LIKE '%s|%%' OR push_order_statuses LIKE '%%|%s|%%' OR push_order_statuses = '-1') ", $data['status'], $data['status'], $data['status'], $data['status']);
+            $query_where[] = sprintf(" (ms.`push_order_statuses` = '%s' OR ms.`push_order_statuses` LIKE '%%|%s' OR ms.`push_order_statuses` LIKE '%s|%%' OR ms.`push_order_statuses` LIKE '%%|%s|%%' OR ms.`push_order_statuses` = '-1') ", $data['status'], $data['status'], $data['status'], $data['status']);
             break;
 
         case PUSH_TYPE_NEW_CUSTOMER:
-            $query_where[] = " push_new_customer = '1' ";
+            $query_where[] = " ms.`push_new_customer` = '1' ";
             break;
 
         default:
             return false;
     }
 
+    $query_where[] = " ma.`status` = 1 OR ma.`status` IS NULL";
+    $query_where[] = " mu.`status` = 1 OR mu.`status` IS NULL";
 
     if (!empty($query_where)) {
         $sql .= " WHERE " . implode(" AND ", $query_where);
